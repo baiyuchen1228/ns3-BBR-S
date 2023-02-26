@@ -1,0 +1,10 @@
+prefix=/usr/local
+libdir=/usr/local/lib
+includedir=/usr/local/include/ns3.33
+
+Name: libns3-tcp-client
+Description: ns-3 module ns3-tcp-client
+Version: 3.33
+Libs: -L${libdir} -Wl,-Bdynamic -lns3.33-tcp-client-debug
+Cflags: -I${includedir}
+Requires: libns3.33-core-debug libns3.33-network-debug libns3.33-internet-debug

@@ -1,0 +1,272 @@
+[
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/antenna/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/antenna/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/antenna/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/aodv/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/aodv/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/aodv/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/applications/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/applications/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/applications/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/bridge/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/bridge/bindings/ns3module.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "src/bridge/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/buildings/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/buildings/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/buildings/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/config-store/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/config-store/bindings/ns3module.cc.6.o -DHAVE_BOOST_UNITS",
+    "file": "src/config-store/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/core/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/core/bindings/ns3module.cc.10.o -DHAVE_BOOST_UNITS",
+    "file": "src/core/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG ../src/core/bindings/module_helpers.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/core/bindings/module_helpers.cc.10.o -DHAVE_BOOST_UNITS",
+    "file": "../src/core/bindings/module_helpers.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/csma/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/csma/bindings/ns3module.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "src/csma/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/csma-layout/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/csma-layout/bindings/ns3module.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "src/csma-layout/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/dsdv/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/dsdv/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/dsdv/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/dsr/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/dsr/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/dsr/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/energy/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/energy/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/energy/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/fd-net-device/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/fd-net-device/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/fd-net-device/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/flow-monitor/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/flow-monitor/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/flow-monitor/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/internet/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/internet/bindings/ns3module.cc.8.o -DHAVE_BOOST_UNITS",
+    "file": "src/internet/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/internet-apps/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/internet-apps/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/internet-apps/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/lr-wpan/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/lr-wpan/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/lr-wpan/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/lte/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/lte/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/lte/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/mesh/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/mesh/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/mesh/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/mobility/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/mobility/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/mobility/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/netanim/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/netanim/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/netanim/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/network/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/network/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/network/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/nix-vector-routing/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/nix-vector-routing/bindings/ns3module.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "src/nix-vector-routing/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/olsr/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/olsr/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/olsr/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/point-to-point/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/point-to-point/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/point-to-point/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/point-to-point-layout/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/point-to-point-layout/bindings/ns3module.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "src/point-to-point-layout/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/propagation/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/propagation/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/propagation/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/sixlowpan/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/sixlowpan/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/sixlowpan/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/spectrum/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/spectrum/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/spectrum/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/stats/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/stats/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/stats/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/tap-bridge/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tap-bridge/bindings/ns3module.cc.6.o -DHAVE_BOOST_UNITS",
+    "file": "src/tap-bridge/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/topology-read/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/topology-read/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/topology-read/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/traffic-control/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/traffic-control/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/traffic-control/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/uan/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/uan/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/uan/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/virtual-net-device/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/virtual-net-device/bindings/ns3module.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "src/virtual-net-device/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/visualizer/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/visualizer/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/visualizer/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/wave/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/wave/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/wave/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/wifi/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/wifi/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/wifi/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -g -fstack-protector-strong -g -fwrapv -O2 -fvisibility=hidden -Wno-array-bounds -pthread -I. -Isrc/core/bindings -I/usr/include/python3.10 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 -DNS_DEPRECATED= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_32= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_31= -DNS3_DEPRECATED_H -DNS_DEPRECATED_3_30= -DNS3_DEPRECATED_H -DNDEBUG src/wimax/bindings/ns3module.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/wimax/bindings/ns3module.cc.7.o -DHAVE_BOOST_UNITS",
+    "file": "src/wimax/bindings/ns3module.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../scratch/scratch-simulator.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/scratch/scratch-simulator.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../scratch/scratch-simulator.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../scratch/tcp-dumbbell.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/scratch/tcp-dumbbell.cc.2.o -DHAVE_BOOST_UNITS",
+    "file": "../scratch/tcp-dumbbell.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../scratch/subdir/scratch-simulator-subdir.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/scratch/subdir/scratch-simulator-subdir.cc.3.o -DHAVE_BOOST_UNITS",
+    "file": "../scratch/subdir/scratch-simulator-subdir.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../scratch/tcp-test.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/scratch/tcp-test.cc.4.o -DHAVE_BOOST_UNITS",
+    "file": "../scratch/tcp-test.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../utils/test-runner.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/utils/test-runner.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../utils/test-runner.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../utils/bench-simulator.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/utils/bench-simulator.cc.2.o -DHAVE_BOOST_UNITS",
+    "file": "../utils/bench-simulator.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../utils/bench-packets.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/utils/bench-packets.cc.3.o -DHAVE_BOOST_UNITS",
+    "file": "../utils/bench-packets.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -pthread -I. -I/usr/include/libxml2 -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../utils/print-introspected-doxygen.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/utils/print-introspected-doxygen.cc.4.o -DHAVE_BOOST_UNITS",
+    "file": "../utils/print-introspected-doxygen.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/fd-net-device/helper/tap-device-creator.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/fd-net-device/helper/tap-device-creator.cc.4.o -DHAVE_BOOST_UNITS",
+    "file": "../src/fd-net-device/helper/tap-device-creator.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/fd-net-device/helper/encode-decode.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/fd-net-device/helper/encode-decode.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "../src/fd-net-device/helper/encode-decode.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/fd-net-device/helper/creator-utils.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/fd-net-device/helper/creator-utils.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "../src/fd-net-device/helper/creator-utils.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/fd-net-device/helper/raw-sock-creator.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/fd-net-device/helper/raw-sock-creator.cc.5.o -DHAVE_BOOST_UNITS",
+    "file": "../src/fd-net-device/helper/raw-sock-creator.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/tap-bridge/model/tap-creator.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tap-bridge/model/tap-creator.cc.4.o -DHAVE_BOOST_UNITS",
+    "file": "../src/tap-bridge/model/tap-creator.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/tap-bridge/model/tap-encode-decode.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tap-bridge/model/tap-encode-decode.cc.4.o -DHAVE_BOOST_UNITS",
+    "file": "../src/tap-bridge/model/tap-encode-decode.cc"
+  }
+]
