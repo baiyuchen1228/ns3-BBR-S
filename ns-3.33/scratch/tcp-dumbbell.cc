@@ -118,7 +118,7 @@ static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bott
 }
 static const double startTime=0;
 static const double simDuration=400.0;
-//./waf --run "scratch/tcp-dumbbell --it=3 --cc1=bbr --cc2=bbr --folder=bbr1 "
+//./waf --run "scratch/tcp-dumbbell --it=3 --cc1=bbr --cc2=bbr --folder=bbr1-dumbbell "
 int main(int argc, char *argv[])
 {
     LogComponentEnable("TcpDumbbell", LOG_LEVEL_ALL);
@@ -173,7 +173,7 @@ int main(int argc, char *argv[])
         TcpTracer::SetTraceFolder(trace_folder.c_str());
     }
     uint32_t bw_unit=1000000;//1Mbps;
-    uint32_t non_bottleneck_bw=100*bw_unit;
+    uint32_t non_bottleneck_bw=1000*bw_unit;//1Gbps
     uint32_t links=5;
     int bottleneck_i=1;
     LinkProperty topoinfo1[]={
@@ -184,7 +184,7 @@ int main(int argc, char *argv[])
         [4]={3,5,0,10},
     };
     {
-        uint32_t bottleneck_bw=12*bw_unit;
+        uint32_t bottleneck_bw=10*bw_unit;//10Mbps
         LinkProperty *info_ptr=topoinfo1;
         for(int i=0;i<links;i++){
             if(bottleneck_i==i){
@@ -295,7 +295,6 @@ int main(int argc, char *argv[])
         client->SetStartTime (Seconds (startTime));
         client->SetStopTime (Seconds (simDuration));
     }
-/*
     // tcp client2 on h0
     {
         Ptr<Node> host=topo.Get(0);
@@ -326,7 +325,6 @@ int main(int argc, char *argv[])
         client->SetStartTime (Seconds (startTime));
         client->SetStopTime (Seconds (simDuration));
     }
-    */
     Simulator::Stop (Seconds (simDuration+10.0));
     Simulator::Run ();
     Simulator::Destroy ();
