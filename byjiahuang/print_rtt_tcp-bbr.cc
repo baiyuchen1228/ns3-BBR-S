@@ -322,7 +322,7 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     }
  //by jiahuang------------------------
  
-    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){//kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
+    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){///kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
         bool rtt_valid=true;
         if(Time::Max()==m_minRtt||m_minRtt.IsZero()){
             rtt_valid=false;
