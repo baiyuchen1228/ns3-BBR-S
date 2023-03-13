@@ -7,6 +7,9 @@
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "tcp-bbr-debug.h"
+
+#include "tcp-cubic.h"
+
 namespace ns3{
 NS_LOG_COMPONENT_DEFINE ("TcpBbr");
 NS_OBJECT_ENSURE_REGISTERED (TcpBbr);
@@ -289,6 +292,17 @@ void TcpBbr::InitPacingRateFromRtt(Ptr<TcpSocketState> tcb){
     tcb->m_pacingRate=pacing_rate;
 }
 
+/////////////////////////////////////////////////////////////////////////////////////
+void StartCubicMode()
+{
+	Ptr<TcpCubic> cubic = CreateObject<TcpCubic> ();
+	std::cout<<"cubic~\n";
+	
+
+}
+
+
+/////////////////////////////////////////////////////////////////////////////////////
 Time record;//by jiahuang
 int32_t cnt=0;
 void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
@@ -307,22 +321,24 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     	std::cout<<"minRtt:"<<m_minRtt.GetSeconds()<<"\n";
     	std::cout<<"lastRtt(on pacing gain=0.75):"<<last_rtt.GetSeconds()<<"\n";
 
-        if(gain == kPacingGain[1] && record > last_rtt) {
-    		std::cout<<"Normal!"<<"\n\n";
+        if(record >= last_rtt) {
+    		//std::cout<<"Normal!"<<"\n\n";
     		cnt=0;
 	}		 
 	else {
 		cnt++;
 		std::cout<<"cnt"<<cnt<<"\n";
-		if(cnt>=20){
+		if(cnt>=40){
     			std::cout<<"Detected"<<"\n\n";
     			cnt=0;
+    			StartCubicMode();
+    			exit(1);
     		}
 	}
     }
  //by jiahuang------------------------
  
-    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){///kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
+    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){//kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
         bool rtt_valid=true;
         if(Time::Max()==m_minRtt||m_minRtt.IsZero()){
             rtt_valid=false;
