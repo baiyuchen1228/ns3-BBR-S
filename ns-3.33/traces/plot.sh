@@ -50,3 +50,17 @@ set output
 exit
 !
 
+gnuplot<<!
+set key top right
+set xlabel "time/s" 
+set ylabel "sendrate/bps"
+set xrange [0:200]
+set yrange [0:7000]
+set grid
+set term "png"
+set output "${output}-sendrate.png"
+plot "${file1}_sendrate.txt" u 1:2 title "${algo1}" with lines lw 2,\
+"${file2}_sendrate.txt" u 1:2 title "${algo2}" with lines lw 2,
+set output
+exit
+!
