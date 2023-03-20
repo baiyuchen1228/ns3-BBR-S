@@ -16,12 +16,11 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA  02111-1307  USA
  *
  */
+#include "tcp-cubic.h"
+#include "ns3/log.h"
 
 #define NS_LOG_APPEND_CONTEXT \
   { std::clog << Simulator::Now ().GetSeconds () << " "; }
-
-#include "tcp-cubic.h"
-#include "ns3/log.h"
 
 NS_LOG_COMPONENT_DEFINE ("TcpCubic");
 
