@@ -2,10 +2,14 @@
 #include <time.h>
 #include <limits>
 #include <algorithm>
+#include <iostream>
 #include "tcp-bbr.h"
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "tcp-bbr-debug.h"
+
+#include "tcp-cubic.h"
+
 namespace ns3{
 NS_LOG_COMPONENT_DEFINE ("TcpBbr");
 NS_OBJECT_ENSURE_REGISTERED (TcpBbr);
@@ -88,6 +92,8 @@ TypeId TcpBbr::GetTypeId (void){
   ;
   return tid;
 }
+
+
 TcpBbr::TcpBbr():TcpCongestionOps(),
 m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0){
     m_uv = CreateObject<UniformRandomVariable> ();
@@ -177,8 +183,11 @@ uint32_t TcpBbr::GetSsThresh (Ptr<const TcpSocketState> tcb, uint32_t bytesInFli
     SaveCongestionWindow(tcb->m_cWnd);
     return tcb->m_ssThresh;
 }
-void TcpBbr::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked){}
-void TcpBbr::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked, const Time& rtt){}
+
+void TcpBbr::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked){} //maybe need to fix
+
+void TcpBbr::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked, const Time& rtt){}  //maybe need to fix
+
 void TcpBbr::CongestionStateSet (Ptr<TcpSocketState> tcb,const TcpSocketState::TcpCongState_t newState){
     if(TcpSocketState::CA_LOSS==newState){
         TcpRateOps::TcpRateSample rs;
@@ -287,35 +296,143 @@ void TcpBbr::InitPacingRateFromRtt(Ptr<TcpSocketState> tcb){
     }
     tcb->m_pacingRate=pacing_rate;
 }
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////
+void StartCubicMode()
+{
+	Ptr<TcpCubic> cubic = CreateObject<TcpCubic> ();
+	std::cout<<"cubic~\n";
+	NS_OBJECT_ENSURE_REGISTERED (TcpCubic);
+	std::cout<<cubic->GetName();
+	Ptr<TcpSocketState> tcb = Create<TcpSocketState>();
+	uint32_t segmentsAcked = 10;
+	Time rtt = Seconds(0.1);
+
+	
+	cubic->IncreaseWindow(tcb,segmentsAcked);
+	
+	cubic->PktsAcked(tcb, segmentsAcked, rtt);
+	
+	
+	//exit(1);
+}
+/////////////////////////////////////////////////////////////////////////////////////
+
+Time record;//by jiahuang
+int32_t cnt=0;
+double sum_minrtt=0;
+double Max_minRTT_at1=0;
+double Max_minRTT_at075=0;
+double Max_minRTT_at125=0;
 void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     DataRate rate=BbrBandwidthToPacingRate(tcb,bw,gain);
     Time last_rtt=tcb->m_lastRtt;
-    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){
+/*
+	std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
+	std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
+*/
+//by jiahuang--------------------
+    Time now=Simulator::Now();
+    sum_minrtt += m_minRtt.GetSeconds();
+    std::cout<<"Now minRtt:"<<m_minRtt.GetSeconds()<<"\n";
+    cnt++;
+     if(m_mode==PROBE_BW && gain == 1)
+    {
+            record=tcb->m_lastRtt;
+            //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
+            //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
+                if(Max_minRTT_at1 < m_minRtt.GetSeconds()){
+    			Max_minRTT_at1 = m_minRtt.GetSeconds();
+    		}
+            std::cout<<"gain=1,minRtt:"<<m_minRtt.GetSeconds()<<"\n";
+            std::cout<<"record (pacing gain=1):"<<record.GetSeconds()<<"\n\n";
+    }
+    
+    if(m_mode==PROBE_BW && gain == kPacingGain[0])
+    {
+            record=tcb->m_lastRtt;
+            //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
+            //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
+                if(Max_minRTT_at125 < m_minRtt.GetSeconds()){
+    			Max_minRTT_at125 = m_minRtt.GetSeconds();
+    		}
+            std::cout<<"gain=1.25,minRtt:"<<m_minRtt.GetSeconds()<<"\n";
+            std::cout<<"record (pacing gain=1.25):"<<record.GetSeconds()<<"\n\n";
+    }
+
+    if(m_mode==PROBE_BW && gain == kPacingGain[1])
+        {
+        	if(Max_minRTT_at075 < m_minRtt.GetSeconds()){
+    			Max_minRTT_at075 = m_minRtt.GetSeconds();
+    		}
+            //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
+            //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
+            std::cout<<"gain=0.75, minRtt:"<<m_minRtt.GetSeconds()<<"\n";
+            std::cout<<"lastRtt(on pacing gain=0.75):"<<last_rtt.GetSeconds()<<"\n\n";
+            if(m_minRtt.GetSeconds()>0.066*2.3){
+		StartCubicMode();
+	    }
+            
+            /*
+            if(record >= last_rtt) {
+
+                //std::cout<<"Normal!"<<"\n\n";
+
+                cnt=0;
+
+            }		 
+            else {
+            cnt++;
+            std::cout<<"cnt"<<cnt<<"\n";
+            if(cnt>=40){
+                    std::cout<<"Detected"<<"\n\n";
+                    cnt=0;
+                    StartCubicMode();
+                    exit(1);
+                }
+            }
+            */
+        }
+        std::cout<<"Time:"<<now.GetSeconds()<<"\n";
+        std::cout<<"sum_minrtt:"<<sum_minrtt<<"\n";
+        std::cout<<"cnt:"<<cnt<<"\n";
+        std::cout<<"Max_minRTT at 0.75: "<<Max_minRTT_at075<<"\n";
+        std::cout<<"Max_minRTT at 1: "<<Max_minRTT_at1<<"\n";
+        std::cout<<"Max_minRTT at 1.25: "<<Max_minRTT_at125<<"\n";
+        std::cout<<"---------------------------\n";
+ //by jiahuang------------------------
+ 
+    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){//kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
         bool rtt_valid=true;
         if(Time::Max()==m_minRtt||m_minRtt.IsZero()){
             rtt_valid=false;
         }
         if(rtt_valid){
+           //std::cout<<"rtt_valid"<<"\n";
             uint32_t mss=tcb->m_segmentSize;
             double bps=1.0*kAddPackets*8*1000/m_minRtt.GetMilliSeconds();
             double add_on=bps;
             if(gain==kPacingGain[0]){
+            	//std::cout<<"Gain=1.25"<<"\n";
                 bps=bw.GetBitRate()+add_on;
                 rate=DataRate(bps);
             }
             if(gain==kPacingGain[1]){
+            	//std::cout<<"Gain=0.75"<<"\n";
                 bps=1.0*4*mss*8*1000/m_minRtt.GetMilliSeconds();
                 DataRate min_rate(bps);
+                              
                 if(bw.GetBitRate()>min_rate.GetBitRate()+add_on){
                     bps=bw.GetBitRate()-add_on;
                     rate=DataRate(bps);
                 }else{
                     rate=min_rate;
-                }
+                }                
             }
         }
     }
-    
     
     if(!m_hasSeenRtt&&(!last_rtt.IsZero())){
         InitPacingRateFromRtt(tcb);
@@ -482,8 +599,11 @@ void TcpBbr::UpdateBandwidth(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateCo
  * Max filter is an approximate sliding window of 5-10 (packet timed) round
  * trips.
  */
+ 
+ 
+ //maybe need to fix
 void TcpBbr::UpdateAckAggregation(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConnection &rc,
-                                const TcpRateOps::TcpRateSample &rs){
+                                const TcpRateOps::TcpRateSample &rs){           
     Time epoch_time(0);
     uint64_t  expected_acked_bytes=0, extra_acked_bytes=0;
     uint64_t reset_thresh_bytes=bbr_ack_epoch_acked_reset_thresh*tcb->m_segmentSize;
@@ -636,6 +756,25 @@ void TcpBbr::UpdateGains(){
         }
         case PROBE_BW:{
             m_pacingGain=(m_ltUseBandwidth? 1.0:kPacingGain[m_cycleIndex]);
+            
+            //std::cout<<"pacingGain:"<<m_pacingGain<<"\n";
+        /* 
+         //by jiahuang--------------------     
+
+      	Time last_rtt=tcb->m_lastRtt;
+	    if(m_pacingGain == kPacingGain[0])
+	    {
+	    	record=tcb->m_lastRtt;
+	    	std::cout<<"record:"<<record<<"\n\n";
+	    }
+	    if(m_pacingGain == kPacingGain[1])
+	    {
+	    	std::cout<<"minRtt:"<<m_minRtt<<"\n";
+	    	std::cout<<"lastRtt:"<<last_rtt<<"\n";
+	    }
+	 //by jiahuang
+      	*/
+      	
             m_cWndGain=kCWNDGainConstant;
             break;
         }
