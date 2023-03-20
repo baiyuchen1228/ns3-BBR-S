@@ -53,6 +53,21 @@ exit
 gnuplot<<!
 set key top right
 set xlabel "time/s" 
+set ylabel "rtt_MA/ms"
+set xrange [0:200]
+set yrange [0:500]
+set grid
+set term "png"
+set output "${output}-rtt-MA.png"
+plot "1_2_MA.txt" u 1:2 title "${algo1}" with lines lw 2,\
+"4_5_MA.txt" u 1:2 title "${algo2}" with lines lw 2,
+set output
+exit
+!
+
+gnuplot<<!
+set key top right
+set xlabel "time/s" 
 set ylabel "sendrate/bps"
 set xrange [0:200]
 set yrange [0:7000]

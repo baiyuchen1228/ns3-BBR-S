@@ -1,6 +1,6 @@
 #! /bin/sh
 algo1=Cubic
-algo2=bbr
+algo2=Cubic
 picname=bbr
 file1=10.1.1.1_49153_10.1.3.2_5000
 file2=10.1.4.2_49153_10.1.5.2_5000
@@ -25,7 +25,7 @@ set key top right
 set xlabel "time/s" 
 set ylabel "inflight/packets"
 set xrange [0:200]
-set yrange [0:60]
+set yrange [0:150]
 set grid
 set term "png"
 set output "${output}-inflight.png"
@@ -40,12 +40,27 @@ set key top right
 set xlabel "time/s" 
 set ylabel "rtt/ms"
 set xrange [0:200]
-set yrange [0:300]
+set yrange [0:500]
 set grid
 set term "png"
 set output "${output}-rtt.png"
 plot "${file1}_rtt.txt" u 1:2 title "${algo1}" with lines lw 2,\
 "${file2}_rtt.txt" u 1:2 title "${algo2}" with lines lw 2,
+set output
+exit
+!
+
+gnuplot<<!
+set key top right
+set xlabel "time/s" 
+set ylabel "rtt_MA/ms"
+set xrange [0:200]
+set yrange [0:500]
+set grid
+set term "png"
+set output "${output}-rtt-MA.png"
+plot "1_2_MA.txt" u 1:2 title "${algo1}" with lines lw 2,\
+"4_5_MA.txt" u 1:2 title "${algo2}" with lines lw 2,
 set output
 exit
 !
