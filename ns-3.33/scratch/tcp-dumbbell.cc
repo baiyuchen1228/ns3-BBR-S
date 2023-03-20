@@ -88,7 +88,7 @@ static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bott
         NodeContainer nodes=NodeContainer (topo.Get (src), topo.Get (dst));
         auto bufSize = std::max<uint32_t> (DEFAULT_PACKET_SIZE, bps * buffer_ms / 8000);
         int packets=bufSize/DEFAULT_PACKET_SIZE;
-        std::cout<<bps<<std::endl;
+        std::cout<<"bps:"<<bps<<"packets:"<<packets<<std::endl;
         PointToPointHelper pointToPoint;
         pointToPoint.SetDeviceAttribute ("DataRate", DataRateValue  (DataRate (bps)));
         pointToPoint.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (owd)));
@@ -218,36 +218,24 @@ int main(int argc, char *argv[])
     if(0==instance.compare("1")){
         topoinfo_ptr=topoinfo1;
         uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt;
-    }else if(0==instance.compare("2")){
+        buffer_ms=rtt*0.5;
+    }
+    else if(0==instance.compare("2")){
         topoinfo_ptr=topoinfo1;
         uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=3*rtt/2;
-    }else if(0==instance.compare("3")){
+        buffer_ms=rtt*0.8;
+    }
+    else if(0==instance.compare("3")){
         topoinfo_ptr=topoinfo1;
         uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=4*rtt/2;
-    }else if(0==instance.compare("4")){
+        buffer_ms=rtt*2;
+    }
+    else if(0==instance.compare("4")){
         topoinfo_ptr=topoinfo1;
         uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=6*rtt/2;
-    }else if(0==instance.compare("5")){
-        topoinfo_ptr=topoinfo2;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt;
-    }else if(0==instance.compare("6")){
-        topoinfo_ptr=topoinfo2;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=3*rtt/2;
-    }else if(0==instance.compare("7")){
-        topoinfo_ptr=topoinfo2;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=4*rtt/2;
-    }else if(0==instance.compare("8")){
-        topoinfo_ptr=topoinfo2;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=6*rtt/2;
-    }else{
+        buffer_ms=rtt*32;
+    }
+    else{
         topoinfo_ptr=topoinfo1;
         uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
         buffer_ms=4*rtt/2;
