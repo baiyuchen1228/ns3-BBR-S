@@ -316,7 +316,7 @@ void StartCubicMode()
 	cubic->PktsAcked(tcb, segmentsAcked, rtt);
 	
 	
-	//exit(1);
+	exit(1);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -326,6 +326,8 @@ double sum_minrtt=0;
 double Max_minRTT_at1=0;
 double Max_minRTT_at075=0;
 double Max_minRTT_at125=0;
+double judge=0;
+
 void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     DataRate rate=BbrBandwidthToPacingRate(tcb,bw,gain);
     Time last_rtt=tcb->m_lastRtt;
@@ -336,7 +338,10 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
 //by jiahuang--------------------
     Time now=Simulator::Now();
     sum_minrtt += m_minRtt.GetSeconds();
-    std::cout<<"Now minRtt:"<<m_minRtt.GetSeconds()<<"\n";
+    std::cout<<"Now minRtt:"<<m_minRtt.GetSeconds()<<"\n";    
+    if(cnt==1){
+    	judge=	m_minRtt.GetSeconds();
+    }
     cnt++;
      if(m_mode==PROBE_BW && gain == 1)
     {
@@ -347,7 +352,7 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     			Max_minRTT_at1 = m_minRtt.GetSeconds();
     		}
             std::cout<<"gain=1,minRtt:"<<m_minRtt.GetSeconds()<<"\n";
-            std::cout<<"record (pacing gain=1):"<<record.GetSeconds()<<"\n\n";
+            std::cout<<"record lastRtt (pacing gain=1):"<<record.GetSeconds()<<"\n\n";
     }
     
     if(m_mode==PROBE_BW && gain == kPacingGain[0])
@@ -359,7 +364,7 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     			Max_minRTT_at125 = m_minRtt.GetSeconds();
     		}
             std::cout<<"gain=1.25,minRtt:"<<m_minRtt.GetSeconds()<<"\n";
-            std::cout<<"record (pacing gain=1.25):"<<record.GetSeconds()<<"\n\n";
+            std::cout<<"record lastRtt(pacing gain=1.25):"<<record.GetSeconds()<<"\n\n";
     }
 
     if(m_mode==PROBE_BW && gain == kPacingGain[1])
@@ -370,8 +375,11 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
             //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
             //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
             std::cout<<"gain=0.75, minRtt:"<<m_minRtt.GetSeconds()<<"\n";
-            std::cout<<"lastRtt(on pacing gain=0.75):"<<last_rtt.GetSeconds()<<"\n\n";
-            if(m_minRtt.GetSeconds()>0.066*2.3){
+            std::cout<<"rcord lastRtt(on pacing gain=0.75):"<<last_rtt.GetSeconds()<<"\n\n";
+            
+            
+            if(judge!=0 && m_minRtt.GetSeconds()>judge*2.3){
+            	std::cout<<"My judge:"<<judge*2.3<<"\n";
 		StartCubicMode();
 	    }
             
@@ -398,6 +406,7 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
         std::cout<<"Time:"<<now.GetSeconds()<<"\n";
         std::cout<<"sum_minrtt:"<<sum_minrtt<<"\n";
         std::cout<<"cnt:"<<cnt<<"\n";
+        std::cout<<"Judge:"<<judge*2.3<<"\n";
         std::cout<<"Max_minRTT at 0.75: "<<Max_minRTT_at075<<"\n";
         std::cout<<"Max_minRTT at 1: "<<Max_minRTT_at1<<"\n";
         std::cout<<"Max_minRTT at 1.25: "<<Max_minRTT_at125<<"\n";
