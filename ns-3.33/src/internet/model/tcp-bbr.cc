@@ -322,6 +322,7 @@ void StartCubicMode()
 
 Time record;//by jiahuang
 int32_t cnt=0;
+double magic=3.1;
 double sum_minrtt=0;
 double Max_minRTT_at1=0;
 double Max_minRTT_at075=0;
@@ -339,10 +340,20 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     Time now=Simulator::Now();
     sum_minrtt += m_minRtt.GetSeconds();
     std::cout<<"Now minRtt:"<<m_minRtt.GetSeconds()<<"\n";    
-    if(cnt==1){
+    if(cnt==10){
     	judge=	m_minRtt.GetSeconds();
     }
     cnt++;
+
+    record=tcb->m_lastRtt;
+    if(m_mode==PROBE_BW && record.GetSeconds() >judge*magic && judge!=0){
+        std::cout<<"gain:"<<gain<<"\n";
+        std::cout<<"record lastRtt:"<<record.GetSeconds()<<"\n";
+        std::cout<<"My judge:"<<judge*magic<<"\n\n";
+        StartCubicMode();
+    }
+    
+
      if(m_mode==PROBE_BW && gain == 1)
     {
             record=tcb->m_lastRtt;
@@ -376,12 +387,13 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
             //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
             std::cout<<"gain=0.75, minRtt:"<<m_minRtt.GetSeconds()<<"\n";
             std::cout<<"rcord lastRtt(on pacing gain=0.75):"<<last_rtt.GetSeconds()<<"\n\n";
-            
-            
-            if(judge!=0 && m_minRtt.GetSeconds()>judge*2.3){
-            	std::cout<<"My judge:"<<judge*2.3<<"\n";
-		StartCubicMode();
-	    }
+
+            /*
+            if(judge!=0 && m_minRtt.GetSeconds()>judge*magic){
+            	std::cout<<"My judge:"<<judge*magic<<"\n";
+		        StartCubicMode();
+	        }
+            */
             
             /*
             if(record >= last_rtt) {
@@ -406,7 +418,7 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
         std::cout<<"Time:"<<now.GetSeconds()<<"\n";
         std::cout<<"sum_minrtt:"<<sum_minrtt<<"\n";
         std::cout<<"cnt:"<<cnt<<"\n";
-        std::cout<<"Judge:"<<judge*2.3<<"\n";
+        std::cout<<"Judge:"<<judge*magic<<"\n";
         std::cout<<"Max_minRTT at 0.75: "<<Max_minRTT_at075<<"\n";
         std::cout<<"Max_minRTT at 1: "<<Max_minRTT_at1<<"\n";
         std::cout<<"Max_minRTT at 1.25: "<<Max_minRTT_at125<<"\n";
@@ -732,6 +744,9 @@ void TcpBbr::UpdateMinRtt(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConne
         SaveCongestionWindow(tcb->m_cWnd);
     }
     if(PROBE_RTT==m_mode){
+        //byjiahuang
+        std::cout << "\nPROBE_RTT mode: rtt value is:" << m_minRtt.GetSeconds() <<"\n";
+        //byjiahuang
         rc_ptr->m_appLimited=std::max<uint32_t> (rc.m_delivered +tcb->m_bytesInFlight,1);
         uint32_t min_cwnd_target=kMinCWndSegment*tcb->m_segmentSize;
         if(m_probeRttDoneStamp.IsZero()&&tcb->m_bytesInFlight<=min_cwnd_target){
