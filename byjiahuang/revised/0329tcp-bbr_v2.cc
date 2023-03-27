@@ -340,7 +340,7 @@ void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
     Time now=Simulator::Now();
     sum_minrtt += m_minRtt.GetSeconds();
     std::cout<<"Now minRtt:"<<m_minRtt.GetSeconds()<<"\n";    
-    if(cnt==10){
+    if(cnt==400){
     	judge=	m_minRtt.GetSeconds();
     }
     cnt++;
