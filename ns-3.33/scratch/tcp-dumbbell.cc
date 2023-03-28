@@ -153,12 +153,12 @@ int main(int argc, char *argv[])
     }
     
     if(0==cc1.compare("reno")||0==cc1.compare("bic")||0==cc1.compare("cubic")||
-      0==cc1.compare("bbr")||0==cc1.compare("bbr2")){}
+      0==cc1.compare("bbr")||0==cc1.compare("bbr2")||0==cc1.compare("bbrplus")){}
     else{
         NS_ASSERT_MSG(0,"please input correct cc1");
     }
     if(0==cc2.compare("reno")||0==cc2.compare("bic")||0==cc2.compare("cubic")||
-      0==cc2.compare("bbr")||0==cc2.compare("bbr2")){}
+      0==cc2.compare("bbr")||0==cc2.compare("bbr2") ||0==cc2.compare("bbrplus")){}
     else{
         NS_ASSERT_MSG(0,"please input correct cc2");
     }
