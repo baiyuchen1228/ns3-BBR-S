@@ -46,7 +46,7 @@ const Time kMinRttExpiry =Seconds(10);
 const Time kProbeRttTime = MilliSeconds(200);  //連接可以在PROBE_RTT模式下花費的最小時間。
 
 const double kStartupGrowthTarget=1.25;  //啟動階段的增長目標。
-g
+
 static const int bbr_pacing_margin_percent = 1;
 
 /* But after 3 rounds w/o significant bw growth, estimate pipe is full: */
@@ -634,35 +634,13 @@ void TcpBbr::UpdateMinRtt(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConne
     if(rs.m_rtt<m_minRtt||filter_expired){
         m_minRtt=rs.m_rtt;
         m_minRttStamp=now;
-        
-        /*
-        ///by Jiahuang
-        if(mode==PROBE_BW)
-	{
-		m_consecutiveProbeRttFails++;
-	}
-        ///by Jiahuang
-        */
     }
-    
-    /*
-    ///by Jiahuang
-    if(m_consecutiveProbeRttFails==3)
-    {
-	//進入cubic
-    }
-   ///by Jiahuang
-   */
-   
     if(/*(!kProbeRttTime.IsZero())&&*/filter_expired&&!m_idleRestart&&m_mode!=PROBE_RTT){
     	
         m_mode=PROBE_RTT;
         m_probeRttDoneStamp=Time(0);
         SaveCongestionWindow(tcb->m_cWnd);  //  pay attention to this
-        
-        m_consecutiveProbeRttFails = 0; //by Jiahuang Reset consecutive failures counter
     }
-    
     
     if(PROBE_RTT==m_mode){
         rc_ptr->m_appLimited=std::max<uint32_t> (rc.m_delivered +tcb->m_bytesInFlight,1);
