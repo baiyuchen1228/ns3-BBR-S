@@ -48,14 +48,18 @@ void TcpClient::ConfigureCongstionAlgo(){
         id=TcpCopa2::GetTypeId ();
     }else if (0==m_algo.compare ("renoagent")){
         id=TcpRenoAgent::GetTypeId();
-    }else{
+    }
+    else if (0==m_algo.compare ("bbrplus")){
+        id=TcpBbrPlus::GetTypeId();
+    }
+    else{
         id=TcpLinuxReno::GetTypeId();
     }
     ObjectFactory congestionAlgorithmFactory;
     congestionAlgorithmFactory.SetTypeId (id);
     Ptr<TcpCongestionOps> algo = congestionAlgorithmFactory.Create<TcpCongestionOps> ();
     TcpSocketBase *base=static_cast<TcpSocketBase*>(PeekPointer(m_socket));
-    if(0==m_algo.compare ("bbr")||0==m_algo.compare ("copa")||0==m_algo.compare ("copa2")){
+    if(0==m_algo.compare ("bbrplus")||0==m_algo.compare ("bbr")||0==m_algo.compare ("copa")||0==m_algo.compare ("copa2")){
         base->SetPacingStatus(true);
     }
     base->SetCongestionControlAlgorithm (algo);
