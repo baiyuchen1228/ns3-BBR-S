@@ -2,14 +2,10 @@
 #include <time.h>
 #include <limits>
 #include <algorithm>
-#include <iostream>
 #include "tcp-bbr.h"
 #include "ns3/log.h"
 #include "ns3/simulator.h"
 #include "tcp-bbr-debug.h"
-
-#include "tcp-cubic.h"
-
 namespace ns3{
 NS_LOG_COMPONENT_DEFINE ("TcpBbr");
 NS_OBJECT_ENSURE_REGISTERED (TcpBbr);
@@ -17,55 +13,77 @@ namespace {
 // Constants based on TCP defaults.
 // The minimum CWND to ensure delayed acks don't reduce bandwidth measurements.
 // Does not inflate the pacing rate.
-const uint32_t kMinCWndSegment= 4;
+const uint32_t kMinCWndSegment= 4;  //最小的 CWND（擁塞窗口大小）
 
-// The gain used for the STARTUP, equal to 2/ln(2).
+// The gain used for the STARTUP, equal to 2/ln(2).  //STARTUP 階段的增長倍率
 const double kDefaultHighGain = 2.885f;
+
 // The newly derived gain for STARTUP, equal to 4 * ln(2)
 const double kDerivedHighGain = 2.773f;
+
 // The newly derived CWND gain for STARTUP, 2.
 const double kDerivedHighCWNDGain = 2.0f;
-// The cycle of gains used during the PROBE_BW stage.
+
+// The cycle of gains used during the PROBE_BW stage.  //PROBE_BW 階段的增長倍率
 const double kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
+
 // The length of the gain cycle.
 const size_t kGainCycleLength = sizeof(kPacingGain) / sizeof(kPacingGain[0]);
-// The size of the bandwidth filter window, in round-trips.
+  
+// The size of the bandwidth filter window, in round-trips.  //帶寬過濾器窗口大小 
 const uint64_t kBandwidthWindowSize = kGainCycleLength + 2;
 
-const double kCWNDGainConstant=2.0;
-// The time after which the current min_rtt value expires.
-const Time kMinRttExpiry =Seconds(10);
-// The minimum time the connection can spend in PROBE_RTT mode.
-const Time kProbeRttTime = MilliSeconds(200);
+const double kCWNDGainConstant=2.0;  //CWND 的增長倍率
 
-const double kStartupGrowthTarget=1.25;
+// The time after which the current min_rtt value expires.  
+/*在 ProbeRTT 階段以外的任何階段下，若 𝑅𝑇𝑝𝑟𝑜𝑝估計值未更新（即獲得較低
+的 RTT 測量值）超過 10 秒，則 BBR 進入 ProbeRTT 階段，並將壅塞窗口減少
+到一個非常小的值（四個封包），來防止未察覺𝑅𝑇𝑝𝑟𝑜𝑝變大的情況。*/
+const Time kMinRttExpiry =Seconds(10);
+
+// The minimum time the connection can spend in PROBE_RTT mode. 
+/*BBR 在至少200 毫秒和一次 RTT 中，保持這個最小封包數量後，會離開 ProbeRTT 階段並轉換到 Startup 階段或 ProbeBW 階段*/
+const Time kProbeRttTime = MilliSeconds(200);  //連接可以在PROBE_RTT模式下花費的最小時間。
+
+const double kStartupGrowthTarget=1.25;  //啟動階段的增長目標。
 
 static const int bbr_pacing_margin_percent = 1;
 
 /* But after 3 rounds w/o significant bw growth, estimate pipe is full: */
-static const uint32_t bbr_full_bw_cnt = 3;
+static const uint32_t bbr_full_bw_cnt = 3;  //沒有顯著增加帶寬增長的循環次數,若達指定次數則估計pipe滿了。
 
 /* "long-term" ("LT") bandwidth estimator parameters... */
 /* The minimum number of rounds in an LT bw sampling interval: */
-static const uint32_t bbr_lt_intvl_min_rtts = 4;
+static const uint32_t bbr_lt_intvl_min_rtts = 4; //一個LT帶寬採樣間隔中的最小往返時間數。
+
 /* If lost/delivered ratio > 20%, interval is "lossy" and we may be policed: */
 static const uint32_t bbr_lt_loss_thresh_num=2;
 static const uint32_t bbr_lt_loss_thresh_den=10;
+
 /* If 2 intervals have a bw ratio <= 1/8, their bw is "consistent": */
+//如果2個間隔的帶寬比例<= 1/8，則它們的帶寬是“一致的”。
 static const double bbr_lt_bw_ratio = 0.125;
+
 /* If 2 intervals have a bw diff <= 4 Kbit/sec their bw is "consistent": */
+//如果2個間隔的帶寬差異<= 4 Kbit / sec，則它們的帶寬是“一致的”。
 static const DataRate bbr_lt_bw_diff =DataRate(4000);
+
 /* If we estimate we're policed, use lt_bw for this many round trips: */
 const uint32_t bbr_lt_bw_max_rtts =48;
 
 /* Gain factor for adding extra_acked to target cwnd: */
-static const double bbr_extra_acked_gain = 1.0;
-/* Window length of extra_acked window. */
+static const double bbr_extra_acked_gain = 1.0; //添加extra_acked到目標CWND的增益因子。
+
+/* Window length of extra_acked window. */      //extra_acked窗口的窗口長度。
 static const uint32_t bbr_extra_acked_win_rtts = 5;
+
 /* Max allowed val for ack_epoch_acked, after which sampling epoch is reset */
+//ack_epoch_acked的最大允許值，超過此值後，重置採樣時期。
 static const uint32_t bbr_ack_epoch_acked_reset_thresh = 1U << 20;
+
 /* Time period for clamping cwnd increment due to ack aggregation */
 static const Time bbr_extra_acked_max_time = MilliSeconds(100);
+
 }  // namespace
 namespace{
     uint32_t kAddPackets=8;
@@ -92,8 +110,6 @@ TypeId TcpBbr::GetTypeId (void){
   ;
   return tid;
 }
-
-
 TcpBbr::TcpBbr():TcpCongestionOps(),
 m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0){
     m_uv = CreateObject<UniformRandomVariable> ();
@@ -183,11 +199,8 @@ uint32_t TcpBbr::GetSsThresh (Ptr<const TcpSocketState> tcb, uint32_t bytesInFli
     SaveCongestionWindow(tcb->m_cWnd);
     return tcb->m_ssThresh;
 }
-
-void TcpBbr::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked){} //maybe need to fix
-
-void TcpBbr::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked, const Time& rtt){}  //maybe need to fix
-
+void TcpBbr::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked){}
+void TcpBbr::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked, const Time& rtt){}
 void TcpBbr::CongestionStateSet (Ptr<TcpSocketState> tcb,const TcpSocketState::TcpCongState_t newState){
     if(TcpSocketState::CA_LOSS==newState){
         TcpRateOps::TcpRateSample rs;
@@ -207,7 +220,7 @@ bool TcpBbr::HasCongControl () const{
     return true;
 }
 void TcpBbr::CongControl (Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConnection &rc,
-                            const TcpRateOps::TcpRateSample &rs){
+                            const TcpRateOps::TcpRateSample &rs){					//Maybe fix here
     NS_ASSERT(rc.m_delivered>=m_delivered);
     //NS_ASSERT(rc.m_deliveredTime>=m_deliveredTime);
     if(rc.m_delivered>=m_delivered){
@@ -296,164 +309,42 @@ void TcpBbr::InitPacingRateFromRtt(Ptr<TcpSocketState> tcb){
     }
     tcb->m_pacingRate=pacing_rate;
 }
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////
-void StartCubicMode()
-{
-	Ptr<TcpCubic> cubic = CreateObject<TcpCubic> ();
-	std::cout<<"cubic~\n";
-	NS_OBJECT_ENSURE_REGISTERED (TcpCubic);
-	std::cout<<cubic->GetName();
-	Ptr<TcpSocketState> tcb = Create<TcpSocketState>();
-	uint32_t segmentsAcked = 10;
-	Time rtt = Seconds(0.1);
-
-	
-	cubic->IncreaseWindow(tcb,segmentsAcked);
-	
-	cubic->PktsAcked(tcb, segmentsAcked, rtt);
-	
-	
-	exit(1);
-}
-/////////////////////////////////////////////////////////////////////////////////////
-
-Time record;//by jiahuang
-int32_t cnt=0;
-double magic=3.1;
-double sum_minrtt=0;
-double Max_minRTT_at1=0;
-double Max_minRTT_at075=0;
-double Max_minRTT_at125=0;
-double judge=0;
-
-void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){
+void TcpBbr::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain){       
     DataRate rate=BbrBandwidthToPacingRate(tcb,bw,gain);
     Time last_rtt=tcb->m_lastRtt;
-/*
-	std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
-	std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
-*/
-//by jiahuang--------------------
-    Time now=Simulator::Now();
-    sum_minrtt += m_minRtt.GetSeconds();
-    std::cout<<"Now minRtt:"<<m_minRtt.GetSeconds()<<"\n";    
-    if(cnt==400){
-    	judge=	m_minRtt.GetSeconds();
-    }
-    cnt++;
-
-    record=tcb->m_lastRtt;
-    if(m_mode==PROBE_BW && record.GetSeconds() >judge*magic && judge!=0){
-        std::cout<<"gain:"<<gain<<"\n";
-        std::cout<<"record lastRtt:"<<record.GetSeconds()<<"\n";
-        std::cout<<"My judge:"<<judge*magic<<"\n\n";
-        StartCubicMode();
-    }
     
-
-     if(m_mode==PROBE_BW && gain == 1)
-    {
-            record=tcb->m_lastRtt;
-            //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
-            //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
-                if(Max_minRTT_at1 < m_minRtt.GetSeconds()){
-    			Max_minRTT_at1 = m_minRtt.GetSeconds();
-    		}
-            std::cout<<"gain=1,minRtt:"<<m_minRtt.GetSeconds()<<"\n";
-            std::cout<<"record lastRtt (pacing gain=1):"<<record.GetSeconds()<<"\n\n";
-    }
+    if (kAddMode && m_mode == PROBE_BW && gain == kPacingGain[1] && m_minRtt == last_rtt) {
+    NS_LOG_INFO("Detected!");
+} else {
+    NS_LOG_INFO("Normal");
+}
     
-    if(m_mode==PROBE_BW && gain == kPacingGain[0])
-    {
-            record=tcb->m_lastRtt;
-            //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
-            //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
-                if(Max_minRTT_at125 < m_minRtt.GetSeconds()){
-    			Max_minRTT_at125 = m_minRtt.GetSeconds();
-    		}
-            std::cout<<"gain=1.25,minRtt:"<<m_minRtt.GetSeconds()<<"\n";
-            std::cout<<"record lastRtt(pacing gain=1.25):"<<record.GetSeconds()<<"\n\n";
-    }
-
-    if(m_mode==PROBE_BW && gain == kPacingGain[1])
-        {
-        	if(Max_minRTT_at075 < m_minRtt.GetSeconds()){
-    			Max_minRTT_at075 = m_minRtt.GetSeconds();
-    		}
-            //std::cout<<"m_cwnd:"<<tcb->m_cWnd<<"\n";
-            //std::cout<<"m_bytesInFlight:"<<tcb->m_bytesInFlight<<"\n";
-            std::cout<<"gain=0.75, minRtt:"<<m_minRtt.GetSeconds()<<"\n";
-            std::cout<<"rcord lastRtt(on pacing gain=0.75):"<<last_rtt.GetSeconds()<<"\n\n";
-
-            /*
-            if(judge!=0 && m_minRtt.GetSeconds()>judge*magic){
-            	std::cout<<"My judge:"<<judge*magic<<"\n";
-		        StartCubicMode();
-	        }
-            */
-            
-            /*
-            if(record >= last_rtt) {
-
-                //std::cout<<"Normal!"<<"\n\n";
-
-                cnt=0;
-
-            }		 
-            else {
-            cnt++;
-            std::cout<<"cnt"<<cnt<<"\n";
-            if(cnt>=40){
-                    std::cout<<"Detected"<<"\n\n";
-                    cnt=0;
-                    StartCubicMode();
-                    exit(1);
-                }
-            }
-            */
-        }
-        std::cout<<"Time:"<<now.GetSeconds()<<"\n";
-        std::cout<<"sum_minrtt:"<<sum_minrtt<<"\n";
-        std::cout<<"cnt:"<<cnt<<"\n";
-        std::cout<<"Judge:"<<judge*magic<<"\n";
-        std::cout<<"Max_minRTT at 0.75: "<<Max_minRTT_at075<<"\n";
-        std::cout<<"Max_minRTT at 1: "<<Max_minRTT_at1<<"\n";
-        std::cout<<"Max_minRTT at 1.25: "<<Max_minRTT_at125<<"\n";
-        std::cout<<"---------------------------\n";
- //by jiahuang------------------------
- 
-    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){//kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
+    if(kAddMode&&m_mode==PROBE_BW&&gain!=kPacingGain[2]){    //kPacingGain[] = {1.25, 0.75, 1, 1, 1, 1, 1, 1};
         bool rtt_valid=true;
         if(Time::Max()==m_minRtt||m_minRtt.IsZero()){
             rtt_valid=false;
         }
         if(rtt_valid){
-           //std::cout<<"rtt_valid"<<"\n";
             uint32_t mss=tcb->m_segmentSize;
             double bps=1.0*kAddPackets*8*1000/m_minRtt.GetMilliSeconds();
             double add_on=bps;
             if(gain==kPacingGain[0]){
-            	//std::cout<<"Gain=1.25"<<"\n";
                 bps=bw.GetBitRate()+add_on;
                 rate=DataRate(bps);
             }
             if(gain==kPacingGain[1]){
-            	//std::cout<<"Gain=0.75"<<"\n";
                 bps=1.0*4*mss*8*1000/m_minRtt.GetMilliSeconds();
                 DataRate min_rate(bps);
-                              
                 if(bw.GetBitRate()>min_rate.GetBitRate()+add_on){
                     bps=bw.GetBitRate()-add_on;
                     rate=DataRate(bps);
                 }else{
                     rate=min_rate;
-                }                
+                }
             }
         }
     }
+    
     
     if(!m_hasSeenRtt&&(!last_rtt.IsZero())){
         InitPacingRateFromRtt(tcb);
@@ -501,7 +392,7 @@ void TcpBbr::LongTermBandwidthIntervalDone(Ptr<TcpSocketState> tcb,DataRate bw){
     m_ltBandwidth=bw;
     ResetLongTermBandwidthSamplingInterval();
 }
-void TcpBbr::LongTermBandwidthSampling(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateSample &rs){
+void TcpBbr::LongTermBandwidthSampling(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateSample &rs){    //MAYBE FIX HERE
     uint32_t lost,delivered;
     if(m_ltUseBandwidth){
         if(PROBE_BW==m_mode&&m_roundStart&&(++m_ltRttCount)>=bbr_lt_bw_max_rtts){
@@ -574,6 +465,7 @@ void TcpBbr::LongTermBandwidthSampling(Ptr<TcpSocketState> tcb,const TcpRateOps:
     #endif
     LongTermBandwidthIntervalDone(tcb,bw);
 }
+
 void TcpBbr::UpdateBandwidth(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConnection &rc,const TcpRateOps::TcpRateSample &rs){
     m_roundStart=0;
     if(rs.m_delivered<=0||rs.m_interval.IsZero()||rs.m_priorTime.IsZero()){
@@ -620,11 +512,8 @@ void TcpBbr::UpdateBandwidth(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateCo
  * Max filter is an approximate sliding window of 5-10 (packet timed) round
  * trips.
  */
- 
- 
- //maybe need to fix
 void TcpBbr::UpdateAckAggregation(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConnection &rc,
-                                const TcpRateOps::TcpRateSample &rs){           
+                                const TcpRateOps::TcpRateSample &rs){
     Time epoch_time(0);
     uint64_t  expected_acked_bytes=0, extra_acked_bytes=0;
     uint64_t reset_thresh_bytes=bbr_ack_epoch_acked_reset_thresh*tcb->m_segmentSize;
@@ -689,20 +578,22 @@ void TcpBbr::CheckDrain(Ptr<TcpSocketState> tcb){
         m_mode=DRAIN;
         tcb->m_ssThresh=BbrInflight(tcb,BbrMaxBandwidth(),1.0);
     }
-    if(DRAIN==m_mode&&BbrBytesInNetAtEdt(tcb->m_bytesInFlight)<=BbrInflight(tcb,BbrMaxBandwidth(),1.0)){
+    
+    //BBR 會透過將 pacing_gain 設為 Startup 階段下的倒數，來清空 Startup 階段所產生的佇列。
+    if(DRAIN==m_mode&&BbrBytesInNetAtEdt(tcb->m_bytesInFlight)<=BbrInflight(tcb,BbrMaxBandwidth(),1.0)){  
         ResetProbeBandwidthMode();  /* we estimate queue is drained */
     }
 }
-void TcpBbr::CheckProbeRttDone(Ptr<TcpSocketState> tcb){
+void TcpBbr::CheckProbeRttDone(Ptr<TcpSocketState> tcb){                           /*//MAYBE FIX HERE*/
     Time now=Simulator::Now();
     if(!(!m_probeRttDoneStamp.IsZero()&&now>m_probeRttDoneStamp)){
         return ;
     }
-    m_minRttStamp=now; /* wait a while until PROBE_RTT */
+    m_minRttStamp=now;  
     if(tcb->m_cWnd<m_priorCwnd){
         tcb->m_cWnd=m_priorCwnd;
     }
-    ResetMode();
+    ResetMode();//BBR 離開 ProbeRTT 階段並回到 ProbeBW 階段 or 回到 Startup 階段
 }
 /* The goal of PROBE_RTT mode is to have BBR flows cooperatively and
  * periodically drain the bottleneck queue, to converge to measure the true
@@ -723,15 +614,21 @@ void TcpBbr::CheckProbeRttDone(Ptr<TcpSocketState> tcb){
  * enough for long enough to drain its queue in the bottleneck. We pick up
  * these min RTT measurements opportunistically with our min_rtt filter. :-)
  */
+ 
+ //(The most possbile) I think FIX here
+ //tatic uint32_t m_consecutiveProbeRttFails = 0;  ///by Jiahuang
+ 
 void TcpBbr::UpdateMinRtt(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConnection &rc,
-                        const TcpRateOps::TcpRateSample &rs){
+                        const TcpRateOps::TcpRateSample &rs){  
     Time now=Simulator::Now();
     TcpRateOps::TcpRateConnection *rc_ptr=const_cast<TcpRateOps::TcpRateConnection*>(&rc);
     bool filter_expired=false;
+    
+    
     if(Time::Max()==rs.m_rtt){
         return ;
     }
-    if(now>kMinRttExpiry+m_minRttStamp){
+    if(now>kMinRttExpiry+m_minRttStamp){   //const Time kMinRttExpiry =Seconds(10);
         filter_expired=true;
     }
     if(rs.m_rtt<m_minRtt||filter_expired){
@@ -739,14 +636,13 @@ void TcpBbr::UpdateMinRtt(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConne
         m_minRttStamp=now;
     }
     if(/*(!kProbeRttTime.IsZero())&&*/filter_expired&&!m_idleRestart&&m_mode!=PROBE_RTT){
+    	
         m_mode=PROBE_RTT;
         m_probeRttDoneStamp=Time(0);
-        SaveCongestionWindow(tcb->m_cWnd);
+        SaveCongestionWindow(tcb->m_cWnd);  //  pay attention to this
     }
+    
     if(PROBE_RTT==m_mode){
-        //byjiahuang
-        std::cout << "\nPROBE_RTT mode: rtt value is:" << m_minRtt.GetSeconds() <<"\n";
-        //byjiahuang
         rc_ptr->m_appLimited=std::max<uint32_t> (rc.m_delivered +tcb->m_bytesInFlight,1);
         uint32_t min_cwnd_target=kMinCWndSegment*tcb->m_segmentSize;
         if(m_probeRttDoneStamp.IsZero()&&tcb->m_bytesInFlight<=min_cwnd_target){
@@ -762,11 +658,14 @@ void TcpBbr::UpdateMinRtt(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConne
             }
         }
     }
+      
+    
     if(rs.m_delivered){
         m_idleRestart=0;
     }
+    
 }
-void TcpBbr::UpdateGains(){
+void TcpBbr::UpdateGains(){    //CUBIC MAY FIX HERE
     switch(m_mode){
         case STARTUP:{
             m_pacingGain=m_highGain;
@@ -780,25 +679,6 @@ void TcpBbr::UpdateGains(){
         }
         case PROBE_BW:{
             m_pacingGain=(m_ltUseBandwidth? 1.0:kPacingGain[m_cycleIndex]);
-            
-            //std::cout<<"pacingGain:"<<m_pacingGain<<"\n";
-        /* 
-         //by jiahuang--------------------     
-
-      	Time last_rtt=tcb->m_lastRtt;
-	    if(m_pacingGain == kPacingGain[0])
-	    {
-	    	record=tcb->m_lastRtt;
-	    	std::cout<<"record:"<<record<<"\n\n";
-	    }
-	    if(m_pacingGain == kPacingGain[1])
-	    {
-	    	std::cout<<"minRtt:"<<m_minRtt<<"\n";
-	    	std::cout<<"lastRtt:"<<last_rtt<<"\n";
-	    }
-	 //by jiahuang
-      	*/
-      	
             m_cWndGain=kCWNDGainConstant;
             break;
         }
@@ -998,11 +878,11 @@ void TcpBbr::UpdateCyclePhase(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateS
         AdvanceCyclePhase();
     }
 }
-void TcpBbr::ResetMode(){
-    if(!BbrFullBandwidthReached()){
+void TcpBbr::ResetMode(){                
+    if(!BbrFullBandwidthReached()){     //還沒滿進入startup
         ResetStartUpMode();
     }else{
-        ResetProbeBandwidthMode();
+        ResetProbeBandwidthMode();      //滿了進入probebw
     }
 }
 void TcpBbr::ResetStartUpMode(){
@@ -1037,3 +917,4 @@ void TcpBbr::LogDebugInfo(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConne
 }
 #endif
 }
+
