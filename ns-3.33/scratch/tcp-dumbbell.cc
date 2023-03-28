@@ -64,6 +64,7 @@ struct LinkProperty{
     uint32_t bandwidth;
     uint32_t propagation_ms;
 };
+
 uint32_t CalMaxRttInDumbbell(LinkProperty *topoinfo,int links){
     uint32_t rtt1=2*(topoinfo[0].propagation_ms+topoinfo[1].propagation_ms+topoinfo[2].propagation_ms);
     uint32_t rtt2=2*(topoinfo[1].propagation_ms+topoinfo[3].propagation_ms+topoinfo[4].propagation_ms);
