@@ -117,7 +117,7 @@ static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bott
     return topo;
 }
 static const double startTime=0;
-static const double simDuration=400.0;
+static const double simDuration=300.0;
 //./waf --run "scratch/tcp-dumbbell --it=3 --cc1=bbr --cc2=bbr --folder=bbr1-dumbbell "
 int main(int argc, char *argv[])
 {
@@ -284,15 +284,15 @@ int main(int argc, char *argv[])
         client->SetStopTime (Seconds (simDuration));
     }
     // tcp client2 on h0
-    {
-        Ptr<Node> host=topo.Get(0);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
-        host->AddApplication(client);
-        client->ConfigurePeer(tcp_sink_addr1);
-        client->SetCongestionAlgo(cc1);
-        client->SetStartTime (Seconds (startTime));
-        client->SetStopTime (Seconds (simDuration));
-    }
+    // {
+    //     Ptr<Node> host=topo.Get(0);
+    //     Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+    //     host->AddApplication(client);
+    //     client->ConfigurePeer(tcp_sink_addr1);
+    //     client->SetCongestionAlgo(cc1);
+    //     client->SetStartTime (Seconds (startTime));
+    //     client->SetStopTime (Seconds (simDuration));
+    // }
     // tcp client3 on h4
     {
         Ptr<Node> host=topo.Get(4);
@@ -304,15 +304,15 @@ int main(int argc, char *argv[])
         client->SetStopTime (Seconds (simDuration));
     }
     // tcp client4 on h4
-    {
-        Ptr<Node> host=topo.Get(4);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
-        host->AddApplication(client);
-        client->ConfigurePeer(tcp_sink_addr2);
-        client->SetCongestionAlgo(cc2);
-        client->SetStartTime (Seconds (startTime));
-        client->SetStopTime (Seconds (simDuration));
-    }
+    // {
+    //     Ptr<Node> host=topo.Get(4);
+    //     Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+    //     host->AddApplication(client);
+    //     client->ConfigurePeer(tcp_sink_addr2);
+    //     client->SetCongestionAlgo(cc2);
+    //     client->SetStartTime (Seconds (startTime));
+    //     client->SetStopTime (Seconds (simDuration));
+    // }
     Simulator::Stop (Seconds (simDuration+10.0));
     Simulator::Run ();
     Simulator::Destroy ();
