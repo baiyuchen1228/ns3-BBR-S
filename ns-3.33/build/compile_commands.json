@@ -268,5 +268,35 @@
     "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
     "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/tap-bridge/model/tap-encode-decode.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tap-bridge/model/tap-encode-decode.cc.4.o -DHAVE_BOOST_UNITS",
     "file": "../src/tap-bridge/model/tap-encode-decode.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/internet/model/tcp-bbrplus.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/internet/model/tcp-bbrplus.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../src/internet/model/tcp-bbrplus.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 '-DTAP_DEV_CREATOR=\"ns3.33-tap-device-creator-debug\"' '-DRAW_SOCK_CREATOR=\"ns3.33-raw-sock-creator-debug\"' ../src/fd-net-device/helper/tap-fd-net-device-helper.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/fd-net-device/helper/tap-fd-net-device-helper.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../src/fd-net-device/helper/tap-fd-net-device-helper.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/tcp-client/model/tcp-client.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tcp-client/model/tcp-client.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../src/tcp-client/model/tcp-client.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/tcp-client/model/tcp-server.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tcp-client/model/tcp-server.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../src/tcp-client/model/tcp-server.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/tcp-client/model/tcp-sink.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/tcp-client/model/tcp-sink.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../src/tcp-client/model/tcp-sink.cc"
+  },
+  {
+    "directory": "/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build",
+    "command": "/usr/bin/g++ -O0 -ggdb -g3 -Wall -Wno-unused-parameter -std=c++11 -fstrict-aliasing -Wstrict-aliasing -fPIC -pthread -I. -DNS3_BUILD_PROFILE_DEBUG -DNS3_ASSERT_ENABLE -DNS3_LOG_ENABLE -DHAVE_SYS_IOCTL_H=1 -DHAVE_IF_NETS_H=1 -DHAVE_NET_ETHERNET_H=1 -DHAVE_PACKET_H=1 -DHAVE_SQLITE3=1 -DHAVE_SEMAPHORE_H=1 -DHAVE_IF_TUN_H=1 -DHAVE_GSL=1 ../src/internet/model/tcp-cubic.cc -c -o/home/bai/Desktop/ns-allinone-3.33/ns-3.33/build/src/internet/model/tcp-cubic.cc.1.o -DHAVE_BOOST_UNITS",
+    "file": "../src/internet/model/tcp-cubic.cc"
   }
 ]

@@ -22,6 +22,7 @@
 
 #include "tcp-cubic.h"
 #include "ns3/log.h"
+#include<unistd.h>
 
 NS_LOG_COMPONENT_DEFINE ("TcpCubic");
 
@@ -144,13 +145,13 @@ TcpCubic::TcpCubic (const TcpCubic &sock)
 
 std::string
 TcpCubic::GetName () const
-{
+{ 
   return "TcpCubic";
 }
 
 void
 TcpCubic::HystartReset (Ptr<const TcpSocketState> tcb)
-{
+{ 
   NS_LOG_FUNCTION (this);
 
   m_roundStart = m_lastAck = Simulator::Now ();
@@ -161,7 +162,7 @@ TcpCubic::HystartReset (Ptr<const TcpSocketState> tcb)
 
 void
 TcpCubic::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked)
-{
+{ 
   NS_LOG_FUNCTION (this << tcb << segmentsAcked);
 
   if (tcb->m_cWnd < tcb->m_ssThresh)
@@ -213,7 +214,7 @@ TcpCubic::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked)
 
 uint32_t
 TcpCubic::Update (Ptr<TcpSocketState> tcb)
-{
+{ 
   NS_LOG_FUNCTION (this);
   Time t;
   uint32_t delta, bicTarget, cnt = 0;
@@ -299,7 +300,7 @@ TcpCubic::Update (Ptr<TcpSocketState> tcb)
 void
 TcpCubic::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked,
                      const Time &rtt)
-{
+{ 
   NS_LOG_FUNCTION (this << tcb << segmentsAcked << rtt);
 
   /* Discard delay samples right after fast recovery */
@@ -326,7 +327,7 @@ TcpCubic::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked,
 
 void
 TcpCubic::HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay)
-{
+{ 
   NS_LOG_FUNCTION (this << delay);
 
   if (!(m_found & m_hystartDetect))
@@ -376,7 +377,7 @@ TcpCubic::HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay)
 
 Time
 TcpCubic::HystartDelayThresh (const Time& t) const
-{
+{ 
   NS_LOG_FUNCTION (this << t);
 
   Time ret = t;
@@ -394,7 +395,7 @@ TcpCubic::HystartDelayThresh (const Time& t) const
 
 uint32_t
 TcpCubic::GetSsThresh (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight)
-{
+{ 
   NS_LOG_FUNCTION (this << tcb << bytesInFlight);
 
   // Without inflation and deflation, these two are the same
@@ -424,7 +425,7 @@ TcpCubic::GetSsThresh (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight)
 
 void
 TcpCubic::CongestionStateSet (Ptr<TcpSocketState> tcb, const TcpSocketState::TcpCongState_t newState)
-{
+{ 
   NS_LOG_FUNCTION (this << tcb << newState);
 
   if (newState == TcpSocketState::CA_LOSS)
@@ -436,7 +437,7 @@ TcpCubic::CongestionStateSet (Ptr<TcpSocketState> tcb, const TcpSocketState::Tcp
 
 void
 TcpCubic::CubicReset (Ptr<const TcpSocketState> tcb)
-{
+{ 
   NS_LOG_FUNCTION (this << tcb);
 
   m_lastMaxCwnd = 0;
@@ -448,7 +449,7 @@ TcpCubic::CubicReset (Ptr<const TcpSocketState> tcb)
 
 Ptr<TcpCongestionOps>
 TcpCubic::Fork (void)
-{
+{ 
   NS_LOG_FUNCTION (this);
   return CopyObject<TcpCubic> (this);
 }

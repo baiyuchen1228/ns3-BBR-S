@@ -299,22 +299,32 @@ void TcpBbrPlus::InitPacingRateFromRtt(Ptr<TcpSocketState> tcb){
 }
 
 
+void
+TcpBbrPlus::CongestionStateSet_cubic (Ptr<TcpSocketState> tcb)
+{ 
+  std::cout<<9<<std::endl;
+  sleep(1);
+  CubicReset (tcb);
+  HystartReset (tcb);
+}
+
 
 /////////////////////////////////////////////////////////////////////////////////////
-void Plus_StartCubicMode()
+void 
+TcpBbrPlus::Plus_StartCubicMode(Ptr<TcpSocketState> tcb)
 {
-	Ptr<TcpCubic> cubic = CreateObject<TcpCubic> ();
-	std::cout<<"cubic~\n";
-	NS_OBJECT_ENSURE_REGISTERED (TcpCubic);
-	std::cout<<cubic->GetName();
-	Ptr<TcpSocketState> tcb = Create<TcpSocketState>();
-	uint32_t segmentsAcked = 10;
-	Time rtt = Seconds(0.1);
+	// Ptr<TcpCubic> cubic = CreateObject<TcpCubic> ();
+	// std::cout<<"cubic~\n";
+	// NS_OBJECT_ENSURE_REGISTERED (TcpCubic);
+	// std::cout<<cubic->GetName();
+	// Ptr<TcpSocketState> tcb = Create<TcpSocketState>();
+	// uint32_t segmentsAcked = 10;
+	// Time rtt = Seconds(0.1);
 
+	CongestionStateSet_cubic(tcb);
+	// cubic->IncreaseWindow(tcb,segmentsAcked);
 	
-	cubic->IncreaseWindow(tcb,segmentsAcked);
-	
-	cubic->PktsAcked(tcb, segmentsAcked, rtt);
+	// cubic->PktsAcked(tcb, segmentsAcked, rtt);
 	
 	
 	exit(1);
@@ -351,7 +361,7 @@ void TcpBbrPlus::SetPacingRate(Ptr<TcpSocketState> tcb,DataRate bw, double gain)
         std::cout<<"gain:"<<gain<<"\n";
         std::cout<<"plus_record lastRtt:"<<plus_record.GetSeconds()<<"\n";
         std::cout<<"My plus_judge:"<<plus_judge*plus_magic<<"\n\n";
-        Plus_StartCubicMode();
+        Plus_StartCubicMode(tcb);
     }
     
 
@@ -1022,6 +1032,283 @@ uint32_t TcpBbrPlus::MockRandomU32Max(uint32_t ep_ro){
     uint64_t v=(((uint64_t) seed* ep_ro) >> 32);
     return v;
 }
+
+
+
+
+
+void
+TcpBbrPlus::CubicReset (Ptr<const TcpSocketState> tcb)
+{ 
+  std::cout<<10<<std::endl;
+  sleep(1);
+  NS_LOG_FUNCTION (this << tcb);
+
+  m_lastMaxCwnd = 0;
+  m_bicOriginPoint = 0;
+  m_bicK = 0;
+  m_delayMin = Time::Min ();
+  m_found = false;
+}
+
+void
+TcpBbrPlus::HystartReset (Ptr<const TcpSocketState> tcb)
+{ 
+  std::cout<<2<<std::endl;
+  sleep(1);
+  NS_LOG_FUNCTION (this);
+
+  m_roundStart_cubic = m_lastAck = Simulator::Now ();
+  std::cout<<"48763"<<std::endl;
+  m_endSeq = tcb->m_highTxMark;
+  std::cout<<"48762"<<std::endl;
+  m_currRtt = Time::Min ();
+  std::cout<<"487633"<<std::endl;
+  m_sampleCnt = 0;
+}
+
+void
+TcpBbrPlus::IncreaseWindow_cubic (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked)
+{ 
+  std::cout<<3<<std::endl;
+  sleep(1);
+  NS_LOG_FUNCTION (this << tcb << segmentsAcked);
+
+  if (tcb->m_cWnd < tcb->m_ssThresh)
+    {
+
+      if (m_hystart && tcb->m_lastAckedSeq > m_endSeq)
+        {
+          HystartReset (tcb);
+        }
+
+      // In Linux, the QUICKACK socket option enables the receiver to send
+      // immediate acks initially (during slow start) and then transition
+      // to delayed acks.  ns-3 does not implement QUICKACK, and if ack
+      // counting instead of byte counting is used during slow start window
+      // growth, when TcpSocket::DelAckCount==2, then the slow start will
+      // not reach as large of an initial window as in Linux.  Therefore,
+      // we can approximate the effect of QUICKACK by making this slow
+      // start phase perform Appropriate Byte Counting (RFC 3465)
+      tcb->m_cWnd += segmentsAcked * tcb->m_segmentSize;
+      segmentsAcked = 0;
+
+      NS_LOG_INFO ("In SlowStart, updated to cwnd " << tcb->m_cWnd <<
+                   " ssthresh " << tcb->m_ssThresh);
+    }
+
+  if (tcb->m_cWnd >= tcb->m_ssThresh && segmentsAcked > 0)
+    {
+      m_cWndCnt += segmentsAcked;
+      uint32_t cnt = Update (tcb);
+
+      /* According to RFC 6356 even once the new cwnd is
+       * calculated you must compare this to the number of ACKs received since
+       * the last cwnd update. If not enough ACKs have been received then cwnd
+       * cannot be updated.
+       */
+      if (m_cWndCnt >= cnt)
+        {
+          tcb->m_cWnd += tcb->m_segmentSize;
+          m_cWndCnt -= cnt;
+          NS_LOG_INFO ("In CongAvoid, updated to cwnd " << tcb->m_cWnd);
+        }
+      else
+        {
+          NS_LOG_INFO ("Not enough segments have been ACKed to increment cwnd."
+                       "Until now " << m_cWndCnt << " cnd " << cnt);
+        }
+    }
+}
+
+uint32_t
+TcpBbrPlus::Update (Ptr<TcpSocketState> tcb)
+{
+  NS_LOG_FUNCTION (this);
+  Time t;
+  uint32_t delta, bicTarget, cnt = 0;
+  double offs;
+  uint32_t segCwnd = tcb->GetCwndInSegments ();
+
+  if (m_epochStart == Time::Min ())
+    {
+      m_epochStart = Simulator::Now ();   // record the beginning of an epoch
+
+      if (m_lastMaxCwnd <= segCwnd)
+        {
+          NS_LOG_DEBUG ("lastMaxCwnd <= m_cWnd. K=0 and origin=" << segCwnd);
+          m_bicK = 0.0;
+          m_bicOriginPoint = segCwnd;
+        }
+      else
+        {
+          m_bicK = std::pow ((m_lastMaxCwnd - segCwnd) / m_c, 1 / 3.);
+          m_bicOriginPoint = m_lastMaxCwnd;
+          NS_LOG_DEBUG ("lastMaxCwnd > m_cWnd. K=" << m_bicK <<
+                        " and origin=" << m_lastMaxCwnd);
+        }
+    }
+
+  t = Simulator::Now () + m_delayMin - m_epochStart;
+
+  if (t.GetSeconds () < m_bicK)       /* t - K */
+    {
+      offs = m_bicK - t.GetSeconds ();
+      NS_LOG_DEBUG ("t=" << t.GetSeconds () << " <k: offs=" << offs);
+    }
+  else
+    {
+      offs = t.GetSeconds () - m_bicK;
+      NS_LOG_DEBUG ("t=" << t.GetSeconds () << " >= k: offs=" << offs);
+    }
+
+
+  /* Constant value taken from Experimental Evaluation of Cubic Tcp, available at
+   * eprints.nuim.ie/1716/1/Hamiltonpfldnet2007_cubic_final.pdf */
+  delta = m_c * std::pow (offs, 3);
+
+  NS_LOG_DEBUG ("delta: " << delta);
+
+  if (t.GetSeconds () < m_bicK)
+    {
+      // below origin
+      bicTarget = m_bicOriginPoint - delta;
+      NS_LOG_DEBUG ("t < k: Bic Target: " << bicTarget);
+    }
+  else
+    {
+      // above origin
+      bicTarget = m_bicOriginPoint + delta;
+      NS_LOG_DEBUG ("t >= k: Bic Target: " << bicTarget);
+    }
+
+  // Next the window target is converted into a cnt or count value. CUBIC will
+  // wait until enough new ACKs have arrived that a counter meets or exceeds
+  // this cnt value. This is how the CUBIC implementation simulates growing
+  // cwnd by values other than 1 segment size.
+  if (bicTarget > segCwnd)
+    {
+      cnt = segCwnd / (bicTarget - segCwnd);
+      NS_LOG_DEBUG ("target>cwnd. cnt=" << cnt);
+    }
+  else
+    {
+      cnt = 100 * segCwnd;
+    }
+
+  if (m_lastMaxCwnd == 0 && cnt > m_cntClamp)
+    {
+      cnt = m_cntClamp;
+    }
+
+  // The maximum rate of cwnd increase CUBIC allows is 1 packet per
+  // 2 packets ACKed, meaning cwnd grows at 1.5x per RTT.
+  return std::max (cnt, 2U);
+}
+
+void
+TcpBbrPlus::PktsAcked_cubic (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked,
+                     const Time &rtt)
+{ 
+  std::cout<<5<<std::endl;
+  sleep(1);
+  NS_LOG_FUNCTION (this << tcb << segmentsAcked << rtt);
+
+  /* Discard delay samples right after fast recovery */
+  if (m_epochStart != Time::Min ()
+      && (Simulator::Now () - m_epochStart) < m_cubicDelta)
+    {
+      return;
+    }
+
+  /* first time call or link delay decreases */
+  if (m_delayMin == Time::Min () || m_delayMin > rtt)
+    {
+      m_delayMin = rtt;
+    }
+
+  /* hystart triggers when cwnd is larger than some threshold */
+  if (m_hystart
+      && tcb->m_cWnd <= tcb->m_ssThresh
+      && tcb->m_cWnd >= m_hystartLowWindow * tcb->m_segmentSize)
+    {
+      HystartUpdate (tcb, rtt);
+    }
+}
+
+void
+TcpBbrPlus::HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay)
+{ 
+  std::cout<<6<<std::endl;
+  sleep(1);
+  NS_LOG_FUNCTION (this << delay);
+
+  if (!(m_found & m_hystartDetect))
+    {
+      Time now = Simulator::Now ();
+
+      /* first detection parameter - ack-train detection */
+      if ((now - m_lastAck) <= m_hystartAckDelta)
+        {
+          m_lastAck = now;
+
+          if ((now - m_roundStart_cubic) > m_delayMin)
+            {
+              m_found |= PACKET_TRAIN;
+            }
+        }
+
+      /* obtain the minimum delay of more than sampling packets */
+      if (m_sampleCnt < m_hystartMinSamples)
+        {
+          if (m_currRtt == Time::Min () || m_currRtt > delay)
+            {
+              m_currRtt = delay;
+            }
+
+          ++m_sampleCnt;
+        }
+      else
+        {
+          if (m_currRtt > m_delayMin +
+              HystartDelayThresh (m_delayMin))
+            {
+              m_found |= DELAY;
+            }
+        }
+      /*
+       * Either one of two conditions are met,
+       * we exit from slow start immediately.
+       */
+      if (m_found & m_hystartDetect)
+        {
+          NS_LOG_DEBUG ("Exit from SS, immediately :-)");
+          tcb->m_ssThresh = tcb->m_cWnd;
+        }
+    }
+}
+
+
+Time
+TcpBbrPlus::HystartDelayThresh (const Time& t)
+{ 
+  std::cout<<7<<std::endl;
+  sleep(1);
+  NS_LOG_FUNCTION (this << t);
+
+  Time ret = t;
+  if (t > m_hystartDelayMax)
+    {
+      ret = m_hystartDelayMax;
+    }
+  else if (t < m_hystartDelayMin)
+    {
+      ret = m_hystartDelayMin;
+    }
+
+  return ret;
+}
+
 #if (TCP_BBR_DEGUG)
 void TcpBbrPlus::LogDebugInfo(Ptr<TcpSocketState> tcb,const TcpRateOps::TcpRateConnection &rc,
                             const TcpRateOps::TcpRateSample &rs){
