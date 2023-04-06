@@ -9,6 +9,8 @@
 #include "tcp-bbr-debug.h"
 #include "tcp-cubic.h"
 
+
+
 namespace ns3{
 NS_LOG_COMPONENT_DEFINE ("TcpBbrPlus");
 NS_OBJECT_ENSURE_REGISTERED (TcpBbrPlus);
@@ -89,6 +91,56 @@ TypeId TcpBbrPlus::GetTypeId (void){
                    DoubleValue (kDefaultHighGain),
                    MakeDoubleAccessor (&TcpBbrPlus::m_highGain),
                    MakeDoubleChecker<double> ())
+    //by jh
+    .AddAttribute ("FastConvergence", "Enable (true) or disable (false) fast convergence",
+                   BooleanValue (true),
+                   MakeBooleanAccessor (&TcpBbrPlus::m_fastConvergence),
+                   MakeBooleanChecker ())    
+    .AddAttribute ("Beta", "Beta for multiplicative decrease",
+                   DoubleValue (0.7),
+                   MakeDoubleAccessor (&TcpBbrPlus::m_beta),
+                   MakeDoubleChecker <double> (0.0))        
+    .AddAttribute ("HyStartLowWindow", "Lower bound cWnd for hybrid slow start (segments)",
+                   UintegerValue (16),
+                   MakeUintegerAccessor (&TcpBbrPlus::m_hystartLowWindow),
+                   MakeUintegerChecker <uint32_t> ())    
+    .AddAttribute ("HyStartDetect", "Hybrid Slow Start detection mechanisms:" \
+                   "1: packet train, 2: delay, 3: both",
+                   IntegerValue (3),
+                   MakeIntegerAccessor (&TcpBbrPlus::m_hystartDetect),
+                   MakeIntegerChecker <int> (1,3))
+    .AddAttribute ("HyStartMinSamples", "Number of delay samples for detecting the increase of delay",
+                   UintegerValue (8),
+                   MakeUintegerAccessor (&TcpBbrPlus::m_hystartMinSamples),
+                   MakeUintegerChecker <uint8_t> ())
+    .AddAttribute ("HyStartAckDelta", "Spacing between ack's indicating train",
+                   TimeValue (MilliSeconds (2)),
+                   MakeTimeAccessor (&TcpBbrPlus::m_hystartAckDelta),
+                   MakeTimeChecker ())
+    .AddAttribute ("HyStartDelayMin", "Minimum time for hystart algorithm",
+                   TimeValue (MilliSeconds (4)),
+                   MakeTimeAccessor (&TcpBbrPlus::m_hystartDelayMin),
+                   MakeTimeChecker ())
+    .AddAttribute ("HyStartDelayMax", "Maximum time for hystart algorithm",
+                   TimeValue (MilliSeconds (1000)),
+                   MakeTimeAccessor (&TcpBbrPlus::m_hystartDelayMax),
+                   MakeTimeChecker ())
+    .AddAttribute ("CubicDelta", "Delta Time to wait after fast recovery before adjusting param",
+                   TimeValue (MilliSeconds (10)),
+                   MakeTimeAccessor (&TcpBbrPlus::m_cubicDelta),
+                   MakeTimeChecker ())
+    .AddAttribute ("CntClamp", "Counter value when no losses are detected (counter is used" \
+                   " when incrementing cWnd in congestion avoidance, to avoid" \
+                   " floating point arithmetic). It is the modulo of the (avoided)" \
+                   " division",
+                   UintegerValue (20),
+                   MakeUintegerAccessor (&TcpBbrPlus::m_cntClamp),
+                   MakeUintegerChecker <uint8_t> ())
+    .AddAttribute ("C", "Cubic Scaling factor",
+                   DoubleValue (0.4),
+                   MakeDoubleAccessor (&TcpBbrPlus::m_c),
+                   MakeDoubleChecker <double> (0.0)) 
+    //by jh            
   ;
   
   return tid;
@@ -96,7 +148,21 @@ TypeId TcpBbrPlus::GetTypeId (void){
 
 
 TcpBbrPlus::TcpBbrPlus():TcpCongestionOps(),
-m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0){
+    m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0),
+    m_cWndCnt (0),
+    m_lastMaxCwnd (0),
+    m_bicOriginPoint (0),
+    m_bicK (0.0),
+    m_delayMin (Time::Min ()),
+    m_epochStart (Time::Min ()),
+    m_found (false),
+    m_roundStartCubic (Time::Min ()),
+    m_endSeq (0),
+    m_lastAck (Time::Min ()),
+    m_cubicDelta (Time::Min ()),
+    m_currRtt (Time::Min ()),
+    m_sampleCnt (0),
+    detectCubic(false){
     m_uv = CreateObject<UniformRandomVariable> ();
     m_uv->SetStream(time(NULL));
 #if (TCP_BBR_DEGUG)
@@ -104,8 +170,34 @@ m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0){
 #endif
 }
 TcpBbrPlus::TcpBbrPlus(const TcpBbrPlus &sock):TcpCongestionOps(sock),
-m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0),
-m_highGain(sock.m_highGain){
+    m_maxBwFilter(kBandwidthWindowSize,DataRate(0),0),
+    m_highGain(sock.m_highGain),
+    m_fastConvergence (sock.m_fastConvergence),
+    m_beta (sock.m_beta),
+    m_hystart (sock.m_hystart),
+    m_hystartDetect (sock.m_hystartDetect),
+    m_hystartLowWindow (sock.m_hystartLowWindow),
+    m_hystartAckDelta (sock.m_hystartAckDelta),
+    m_hystartDelayMin (sock.m_hystartDelayMin),
+    m_hystartDelayMax (sock.m_hystartDelayMax),
+    m_hystartMinSamples (sock.m_hystartMinSamples),
+    m_initialCwnd (sock.m_initialCwnd),
+    m_cntClamp (sock.m_cntClamp),
+    m_c (sock.m_c),
+    m_cWndCnt (sock.m_cWndCnt),
+    m_lastMaxCwnd (sock.m_lastMaxCwnd),
+    m_bicOriginPoint (sock.m_bicOriginPoint),
+    m_bicK (sock.m_bicK),
+    m_delayMin (sock.m_delayMin),
+    m_epochStart (sock.m_epochStart),
+    m_found (sock.m_found),
+    m_roundStart (sock.m_roundStart),
+    m_endSeq (sock.m_endSeq),
+    m_lastAck (sock.m_lastAck),
+    m_cubicDelta (sock.m_cubicDelta),
+    m_currRtt (sock.m_currRtt),
+    m_sampleCnt (sock.m_sampleCnt){
+    detectCubic = false;
     m_uv = CreateObject<UniformRandomVariable> ();
     m_uv->SetStream(time(NULL));
 #if (TCP_BBR_DEGUG)
@@ -181,26 +273,42 @@ void TcpBbrPlus::Init (Ptr<TcpSocketState> tcb){
     InitPacingRateFromRtt(tcb);
 }
 uint32_t TcpBbrPlus::GetSsThresh (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight){
+    if(detectCubic == false) return GetSsThresh_bbr(tcb, bytesInFlight);
+    else return GetSsThresh_cubic(tcb, bytesInFlight);
+}
+
+uint32_t TcpBbrPlus::GetSsThresh_bbr (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight){
     SaveCongestionWindow(tcb->m_cWnd);
     return tcb->m_ssThresh;
 }
 
-void TcpBbrPlus::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked){} //maybe need to fix
+void TcpBbrPlus::IncreaseWindow (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked){
+    if(detectCubic == false) return;
+    IncreaseWindow_cubic(tcb, segmentsAcked);
+} //maybe need to fix
 
-void TcpBbrPlus::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked, const Time& rtt){}  //maybe need to fix
+void TcpBbrPlus::PktsAcked (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked, const Time& rtt){
+    if(detectCubic == false) return;
+    PktsAcked_cubic(tcb, segmentsAcked, rtt);
+}  //maybe need to fix
 
 void TcpBbrPlus::CongestionStateSet (Ptr<TcpSocketState> tcb,const TcpSocketState::TcpCongState_t newState){
-    if(TcpSocketState::CA_LOSS==newState){
-        TcpRateOps::TcpRateSample rs;
-        rs.m_bytesLoss=1;
-        m_prevCongState=TcpSocketState::CA_LOSS;
-        m_fullBandwidth=0;
-        m_roundStart=1;
-        LongTermBandwidthSampling(tcb,rs);
-        bool use_lt=m_ltUseBandwidth;
-        #if (TCP_BBR_DEGUG)
-        NS_LOG_INFO(m_debug->GetUuid()<<" rx time out "<<use_lt);
-        #endif
+    if(detectCubic == false){
+        if(TcpSocketState::CA_LOSS==newState){
+            TcpRateOps::TcpRateSample rs;
+            rs.m_bytesLoss=1;
+            m_prevCongState=TcpSocketState::CA_LOSS;
+            m_fullBandwidth=0;
+            m_roundStart=1;
+            LongTermBandwidthSampling(tcb,rs);
+            bool use_lt=m_ltUseBandwidth;
+            #if (TCP_BBR_DEGUG)
+            NS_LOG_INFO(m_debug->GetUuid()<<" rx time out "<<use_lt);
+            #endif
+        }
+    }
+    else{
+        CongestionStateSet_cubic(tcb, newState);
     }
 }
 void TcpBbrPlus::CwndEvent (Ptr<TcpSocketState> tcb,const TcpSocketState::TcpCAEvent_t event){}
@@ -299,16 +407,6 @@ void TcpBbrPlus::InitPacingRateFromRtt(Ptr<TcpSocketState> tcb){
 }
 
 
-void
-TcpBbrPlus::CongestionStateSet_cubic (Ptr<TcpSocketState> tcb)
-{ 
-  std::cout<<9<<std::endl;
-  sleep(1);
-  CubicReset (tcb);
-  HystartReset (tcb);
-}
-
-
 /////////////////////////////////////////////////////////////////////////////////////
 void 
 TcpBbrPlus::Plus_StartCubicMode(Ptr<TcpSocketState> tcb)
@@ -320,14 +418,13 @@ TcpBbrPlus::Plus_StartCubicMode(Ptr<TcpSocketState> tcb)
 	// Ptr<TcpSocketState> tcb = Create<TcpSocketState>();
 	// uint32_t segmentsAcked = 10;
 	// Time rtt = Seconds(0.1);
-
-	CongestionStateSet_cubic(tcb);
+    detectCubic = true;
 	// cubic->IncreaseWindow(tcb,segmentsAcked);
 	
 	// cubic->PktsAcked(tcb, segmentsAcked, rtt);
 	
 	
-	exit(1);
+	// exit(1);
 }
 /////////////////////////////////////////////////////////////////////////////////////
 
@@ -1034,14 +1131,55 @@ uint32_t TcpBbrPlus::MockRandomU32Max(uint32_t ep_ro){
 }
 
 
+void
+TcpBbrPlus::CongestionStateSet_cubic (Ptr<TcpSocketState> tcb, const TcpSocketState::TcpCongState_t newState)
+{ 
+  std::cout<<9<<std::endl;
+  NS_LOG_FUNCTION (this << tcb << newState);
 
+  if (newState == TcpSocketState::CA_LOSS)
+    {
+      CubicReset (tcb);
+      HystartReset (tcb);
+    }
+}
 
+uint32_t
+TcpBbrPlus::GetSsThresh_cubic (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight)
+{ 
+  std::cout<<10<<std::endl;
+  NS_LOG_FUNCTION (this << tcb << bytesInFlight);
+
+  // Without inflation and deflation, these two are the same
+  uint32_t segInFlight = bytesInFlight / tcb->m_segmentSize;
+  uint32_t segCwnd = tcb->GetCwndInSegments ();
+  NS_LOG_DEBUG ("Loss at cWnd=" << segCwnd << " in flight=" << segInFlight);
+
+  /* Wmax and fast convergence */
+  if (segCwnd < m_lastMaxCwnd && m_fastConvergence)
+    {
+      m_lastMaxCwnd = (segCwnd * (1 + m_beta)) / 2; // Section 4.6 in RFC 8312
+    }
+  else
+    {
+      m_lastMaxCwnd = segCwnd;
+    }
+
+  m_epochStart = Time::Min ();    // end of epoch
+
+  /* Formula taken from the Linux kernel */
+  uint32_t ssThresh = std::max (static_cast<uint32_t> (segInFlight * m_beta ), 2U) * tcb->m_segmentSize;
+
+  NS_LOG_DEBUG ("SsThresh = " << ssThresh);
+
+  return ssThresh;
+}
 
 void
 TcpBbrPlus::CubicReset (Ptr<const TcpSocketState> tcb)
 { 
   std::cout<<10<<std::endl;
-  sleep(1);
+  // sleep(1);
   NS_LOG_FUNCTION (this << tcb);
 
   m_lastMaxCwnd = 0;
@@ -1054,11 +1192,11 @@ TcpBbrPlus::CubicReset (Ptr<const TcpSocketState> tcb)
 void
 TcpBbrPlus::HystartReset (Ptr<const TcpSocketState> tcb)
 { 
-  std::cout<<2<<std::endl;
-  sleep(1);
+  // std::cout<<2<<std::endl;
+  // sleep(1);
   NS_LOG_FUNCTION (this);
 
-  m_roundStart_cubic = m_lastAck = Simulator::Now ();
+  m_roundStartCubic = m_lastAck = Simulator::Now ();
   std::cout<<"48763"<<std::endl;
   m_endSeq = tcb->m_highTxMark;
   std::cout<<"48762"<<std::endl;
@@ -1070,8 +1208,8 @@ TcpBbrPlus::HystartReset (Ptr<const TcpSocketState> tcb)
 void
 TcpBbrPlus::IncreaseWindow_cubic (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked)
 { 
-  std::cout<<3<<std::endl;
-  sleep(1);
+  // std::cout<<3<<std::endl;
+  // sleep(1);
   NS_LOG_FUNCTION (this << tcb << segmentsAcked);
 
   if (tcb->m_cWnd < tcb->m_ssThresh)
@@ -1206,12 +1344,15 @@ TcpBbrPlus::Update (Ptr<TcpSocketState> tcb)
   return std::max (cnt, 2U);
 }
 
+
+
+
 void
 TcpBbrPlus::PktsAcked_cubic (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked,
                      const Time &rtt)
 { 
-  std::cout<<5<<std::endl;
-  sleep(1);
+  // std::cout<<5<<std::endl;
+  // sleep(1);
   NS_LOG_FUNCTION (this << tcb << segmentsAcked << rtt);
 
   /* Discard delay samples right after fast recovery */
@@ -1239,8 +1380,8 @@ TcpBbrPlus::PktsAcked_cubic (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked,
 void
 TcpBbrPlus::HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay)
 { 
-  std::cout<<6<<std::endl;
-  sleep(1);
+//   std::cout<<6<<std::endl;
+//   sleep(1);
   NS_LOG_FUNCTION (this << delay);
 
   if (!(m_found & m_hystartDetect))
@@ -1252,7 +1393,7 @@ TcpBbrPlus::HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay)
         {
           m_lastAck = now;
 
-          if ((now - m_roundStart_cubic) > m_delayMin)
+          if ((now - m_roundStartCubic) > m_delayMin)
             {
               m_found |= PACKET_TRAIN;
             }
@@ -1292,8 +1433,8 @@ TcpBbrPlus::HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay)
 Time
 TcpBbrPlus::HystartDelayThresh (const Time& t)
 { 
-  std::cout<<7<<std::endl;
-  sleep(1);
+//   std::cout<<7<<std::endl;
+//   sleep(1);
   NS_LOG_FUNCTION (this << t);
 
   Time ret = t;
