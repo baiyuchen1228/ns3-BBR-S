@@ -99,6 +99,8 @@ public:
     uint8_t  m_hystartMinSamples; //!< Number of delay samples for detecting the increase of delay
     Time     m_hystartDelayMax;  //!< Maximum time for hystart algorithm
     Time     m_hystartDelayMin;  //!< Minimum time for hystart algorithm
+    bool     m_fastConvergence;  //!< Enable or disable fast convergence algorithm
+    double   m_beta;             //!< Beta for cubic multiplicative increase
     // Time         m_roundStart_cubic;      //!<  Beginning of each round
 
     // cubic 
@@ -112,6 +114,7 @@ public:
                      const Time &rtt);
     void HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay);
     Time HystartDelayThresh (const Time& t); 
+    uint32_t GetSsThresh_cubic (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight);
     // cubic
 
 protected:
