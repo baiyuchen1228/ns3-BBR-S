@@ -83,7 +83,7 @@ public:
     Time         m_delayMin;        //!<  Min delay
     bool         m_found;           //!<  The exit point is found?
     Time         m_lastAck;         //!<  Last time when the ACK spacing is close
-    Time         m_roundStart_cubic; // 新增出來的Time 形別，因為bbr的型別是unit32
+    Time         m_roundStartCubic; // 新增出來的Time 形別，因為bbr的型別是unit32
     SequenceNumber32   m_endSeq;    //!<  End sequence of the round
     Time         m_currRtt;         //!<  Current Rtt
     uint32_t     m_sampleCnt;       //!<  Count of samples for HyStart
@@ -99,13 +99,14 @@ public:
     uint8_t  m_hystartMinSamples; //!< Number of delay samples for detecting the increase of delay
     Time     m_hystartDelayMax;  //!< Maximum time for hystart algorithm
     Time     m_hystartDelayMin;  //!< Minimum time for hystart algorithm
+    // Time         m_roundStart_cubic;      //!<  Beginning of each round
     bool     m_fastConvergence;  //!< Enable or disable fast convergence algorithm
     double   m_beta;             //!< Beta for cubic multiplicative increase
-    // Time         m_roundStart_cubic;      //!<  Beginning of each round
-
+    bool detectCubic;
+    uint32_t m_initialCwnd;      //!< Initial cWnd
     // cubic 
     void Plus_StartCubicMode(Ptr<TcpSocketState> tcb);
-    void CongestionStateSet_cubic(Ptr<TcpSocketState> tcb);
+    void CongestionStateSet_cubic(Ptr<TcpSocketState> tcb, const TcpSocketState::TcpCongState_t newState);
     void CubicReset (Ptr<const TcpSocketState> tcb);
     void HystartReset (Ptr<const TcpSocketState> tcb);
     void IncreaseWindow_cubic (Ptr<TcpSocketState> tcb, uint32_t segmentsAcked);
@@ -114,6 +115,7 @@ public:
                      const Time &rtt);
     void HystartUpdate (Ptr<TcpSocketState> tcb, const Time& delay);
     Time HystartDelayThresh (const Time& t); 
+    uint32_t GetSsThresh_bbr (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight);
     uint32_t GetSsThresh_cubic (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight);
     // cubic
 
