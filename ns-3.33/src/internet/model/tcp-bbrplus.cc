@@ -1131,11 +1131,6 @@ uint32_t TcpBbrPlus::MockRandomU32Max(uint32_t ep_ro){
 }
 
 
-void
-TcpBbrPlus::CongestionStateSet_cubic (Ptr<TcpSocketState> tcb, const TcpSocketState::TcpCongState_t newState)
-{ 
-  //std::cout<<9<<std::endl;
-  NS_LOG_FUNCTION (this << tcb << newState);
 
   if (newState == TcpSocketState::CA_LOSS)
     {
@@ -1144,42 +1139,12 @@ TcpBbrPlus::CongestionStateSet_cubic (Ptr<TcpSocketState> tcb, const TcpSocketSt
     }
 }
 
-uint32_t
-TcpBbrPlus::GetSsThresh_cubic (Ptr<const TcpSocketState> tcb, uint32_t bytesInFlight)
-{ 
-  //std::cout<<10<<std::endl;
-  NS_LOG_FUNCTION (this << tcb << bytesInFlight);
-
-  // Without inflation and deflation, these two are the same
-  uint32_t segInFlight = bytesInFlight / tcb->m_segmentSize;
-  uint32_t segCwnd = tcb->GetCwndInSegments ();
-  NS_LOG_DEBUG ("Loss at cWnd=" << segCwnd << " in flight=" << segInFlight);
-
-  /* Wmax and fast convergence */
-  if (segCwnd < m_lastMaxCwnd && m_fastConvergence)
-    {
-      m_lastMaxCwnd = (segCwnd * (1 + m_beta)) / 2; // Section 4.6 in RFC 8312
-    }
-  else
-    {
-      m_lastMaxCwnd = segCwnd;
-    }
-
-  m_epochStart = Time::Min ();    // end of epoch
-
-  /* Formula taken from the Linux kernel */
-  uint32_t ssThresh = std::max (static_cast<uint32_t> (segInFlight * m_beta ), 2U) * tcb->m_segmentSize;
-
-  NS_LOG_DEBUG ("SsThresh = " << ssThresh);
-
-  return ssThresh;
-}
 
 void
 TcpBbrPlus::CubicReset (Ptr<const TcpSocketState> tcb)
 { 
-  //std::cout<<10<<std::endl;
-  // sleep(1);
+  std::cout<<10<<std::endl;
+  sleep(1);
   NS_LOG_FUNCTION (this << tcb);
 
   m_lastMaxCwnd = 0;
