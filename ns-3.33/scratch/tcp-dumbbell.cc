@@ -273,7 +273,7 @@ int main(int argc, char *argv[])
         server->SetStartTime (Seconds (0.0));
     }
     
-    uint64_t totalTxBytes1 = 100000*1500;
+uint64_t totalTxBytes1 = 100000*1500;
     // tcp client1 on h0
     {
         Ptr<Node> host=topo.Get(0);
@@ -319,5 +319,4 @@ int main(int argc, char *argv[])
     Simulator::Run ();
     Simulator::Destroy ();
     return 0;
-    
 }
