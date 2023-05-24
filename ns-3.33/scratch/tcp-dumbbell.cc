@@ -247,6 +247,46 @@ int main(int argc, char *argv[])
         uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
         buffer_ms=rtt*6;
     }
+    else if(0==instance.compare("7")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*8;
+    }
+    else if(0==instance.compare("8")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*10;
+    }
+    else if(0==instance.compare("9")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*12;
+    }
+    else if(0==instance.compare("10")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*14;
+    }
+    else if(0==instance.compare("11")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*16;
+    }
+    else if(0==instance.compare("12")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*18;
+    }
+    else if(0==instance.compare("13")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*25;
+    }
+    else if(0==instance.compare("14")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*30;
+    }
     else{
         topoinfo_ptr=topoinfo1;
         uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
@@ -284,11 +324,7 @@ int main(int argc, char *argv[])
     //     server->SetStartTime (Seconds (0.0));
     // }
     
-<<<<<<< HEAD
     uint64_t totalTxBytes1 = 1000000*1500;
-=======
-uint64_t totalTxBytes1 = 100000*1500;
->>>>>>> dc67b396cd084b75b5080ca1cae7541ba8399ac0
     // tcp client1 on h0
     {
         Ptr<Node> host=topo.Get(0);
@@ -310,7 +346,6 @@ uint64_t totalTxBytes1 = 100000*1500;
         client->SetStopTime (Seconds (simDuration));
     }
     // tcp client3 on h4
-<<<<<<< HEAD
     // uint64_t totalTxBytes2 = 20000*1500;
     // {
     //     Ptr<Node> host=topo.Get(4);
@@ -331,28 +366,6 @@ uint64_t totalTxBytes1 = 100000*1500;
     //     client->SetStartTime (Seconds (startTime));
     //     client->SetStopTime (Seconds (simDuration));
     // }
-=======
-    uint64_t totalTxBytes2 = 20000*1500;
-    {
-        Ptr<Node> host=topo.Get(4);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes2,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
-        host->AddApplication(client);
-        client->ConfigurePeer(tcp_sink_addr2);
-        client->SetCongestionAlgo(cc2);
-        client->SetStartTime (Seconds (startTime));
-        client->SetStopTime (Seconds (simDuration));
-    }
-    // tcp client4 on h4
-    {
-        Ptr<Node> host=topo.Get(4);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes2,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
-        host->AddApplication(client);
-        client->ConfigurePeer(tcp_sink_addr2);
-        client->SetCongestionAlgo(cc2);
-        client->SetStartTime (Seconds (startTime));
-        client->SetStopTime (Seconds (simDuration));
-    }
->>>>>>> dc67b396cd084b75b5080ca1cae7541ba8399ac0
     Simulator::Stop (Seconds (simDuration+10.0));
     Simulator::Run ();
     Simulator::Destroy ();
