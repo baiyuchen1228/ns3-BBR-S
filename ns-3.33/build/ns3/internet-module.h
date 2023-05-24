@@ -88,6 +88,7 @@
 #include "rtt-estimator.h"
 #include "tcp-bbr-debug.h"
 #include "tcp-bbr.h"
+#include "tcp-bbrplus.h"
 #include "tcp-bic.h"
 #include "tcp-cc-util.h"
 #include "tcp-congestion-ops.h"

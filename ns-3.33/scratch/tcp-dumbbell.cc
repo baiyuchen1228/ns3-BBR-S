@@ -61,19 +61,21 @@ private:
 
 struct LinkProperty{
     uint16_t nodes[2];
-    uint32_t bandwidth;
-    uint32_t propagation_ms;
+    uint64_t bandwidth;
+    uint64_t propagation_ms;
 };
-uint32_t CalMaxRttInDumbbell(LinkProperty *topoinfo,int links){
-    uint32_t rtt1=2*(topoinfo[0].propagation_ms+topoinfo[1].propagation_ms+topoinfo[2].propagation_ms);
-    uint32_t rtt2=2*(topoinfo[1].propagation_ms+topoinfo[3].propagation_ms+topoinfo[4].propagation_ms);
-    return std::max<uint32_t>(rtt1,rtt2);
+
+uint64_t CalMaxRttInDumbbell(LinkProperty *topoinfo,int links){
+    uint64_t rtt1=2*(topoinfo[0].propagation_ms+topoinfo[1].propagation_ms+topoinfo[2].propagation_ms);
+    // uint64_t rtt2=2*(topoinfo[1].propagation_ms+topoinfo[3].propagation_ms+topoinfo[4].propagation_ms);
+    // return std::max<uint64_t>(rtt1,rtt2);
+    return rtt1;
 }
 
 #define DEFAULT_PACKET_SIZE 1500
 int ip=1;
 static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bottleneck_i,
-                                    uint32_t buffer_ms,TriggerRandomLoss *trigger=nullptr)
+                                    uint64_t buffer_ms,TriggerRandomLoss *trigger=nullptr)
 {
     int hosts=links+1;
     NodeContainer topo;
@@ -83,12 +85,12 @@ static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bott
     for (int i=0;i<links;i++){
         uint16_t src=topoinfo[i].nodes[0];
         uint16_t dst=topoinfo[i].nodes[1];
-        uint32_t bps=topoinfo[i].bandwidth;
-        uint32_t owd=topoinfo[i].propagation_ms;
+        uint64_t bps=topoinfo[i].bandwidth;
+        uint64_t owd=topoinfo[i].propagation_ms;
         NodeContainer nodes=NodeContainer (topo.Get (src), topo.Get (dst));
-        auto bufSize = std::max<uint32_t> (DEFAULT_PACKET_SIZE, bps * buffer_ms / 8000);
-        int packets=bufSize/DEFAULT_PACKET_SIZE;
-        std::cout<<"bps:"<<bps<<"packets:"<<packets<<std::endl;
+        auto bufSize = std::max<uint64_t> (DEFAULT_PACKET_SIZE, bps * buffer_ms / 8000);
+        uint64_t packets=bufSize/DEFAULT_PACKET_SIZE;
+        std::cout<<"bps:"<<bps<<"packets:"<<packets<<"bufsize"<<bufSize<<std::endl;
         PointToPointHelper pointToPoint;
         pointToPoint.SetDeviceAttribute ("DataRate", DataRateValue  (DataRate (bps)));
         pointToPoint.SetChannelAttribute ("Delay", TimeValue (MilliSeconds (owd)));
@@ -117,7 +119,7 @@ static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bott
     return topo;
 }
 static const double startTime=0;
-static const double simDuration=300.0;
+static const double simDuration=200.0;
 //./waf --run "scratch/tcp-dumbbell --it=3 --cc1=bbr --cc2=bbr --folder=bbr1-dumbbell "
 int main(int argc, char *argv[])
 {
@@ -136,7 +138,7 @@ int main(int argc, char *argv[])
     cmd.AddValue ("folder", "folder name to collect data", folder_name);
     cmd.AddValue ("lo", "loss",loss_str);
     cmd.Parse (argc, argv);
-    uint32_t kMaxmiumSegmentSize=1400;
+    uint64_t kMaxmiumSegmentSize=1400;
     Config::SetDefault("ns3::TcpSocket::SndBufSize", UintegerValue(200*kMaxmiumSegmentSize));
     Config::SetDefault("ns3::TcpSocket::RcvBufSize", UintegerValue(200*kMaxmiumSegmentSize));
     Config::SetDefault("ns3::TcpSocket::SegmentSize",UintegerValue(kMaxmiumSegmentSize));
@@ -153,12 +155,12 @@ int main(int argc, char *argv[])
     }
     
     if(0==cc1.compare("reno")||0==cc1.compare("bic")||0==cc1.compare("cubic")||
-      0==cc1.compare("bbr")||0==cc1.compare("bbr2")){}
+      0==cc1.compare("bbr")||0==cc1.compare("bbr2")||0==cc1.compare("bbrplus")){}
     else{
         NS_ASSERT_MSG(0,"please input correct cc1");
     }
     if(0==cc2.compare("reno")||0==cc2.compare("bic")||0==cc2.compare("cubic")||
-      0==cc2.compare("bbr")||0==cc2.compare("bbr2")){}
+      0==cc2.compare("bbr")||0==cc2.compare("bbr2") ||0==cc2.compare("bbrplus")){}
     else{
         NS_ASSERT_MSG(0,"please input correct cc2");
     }
@@ -172,19 +174,19 @@ int main(int argc, char *argv[])
         TcpBbrDebug::SetTraceFolder(trace_folder.c_str());
         TcpTracer::SetTraceFolder(trace_folder.c_str());
     }
-    uint32_t bw_unit=1000000;//1Mbps;
-    uint32_t non_bottleneck_bw=1000*bw_unit;//1Gbps
-    uint32_t links=5;
+    uint64_t bw_unit=1000000;//1Mbps;
+    uint64_t non_bottleneck_bw=1000*bw_unit;//1Gbps
+    uint64_t links=3;
     int bottleneck_i=1;
     LinkProperty topoinfo1[]={
-        [0]={0,2,0,10},
-        [1]={2,3,0,10},
-        [2]={3,1,0,10},
-        [3]={2,4,0,10},
-        [4]={3,5,0,10},
+        [0]={0,2,0,1},
+        [1]={2,3,0,1},
+        [2]={3,1,0,1},
+        // [3]={2,4,0,10},
+        // [4]={3,5,0,10},
     };
     {
-        uint32_t bottleneck_bw=10*bw_unit;//10Mbps
+        uint64_t bottleneck_bw=10*bw_unit;//10Mbps
         LinkProperty *info_ptr=topoinfo1;
         for(int i=0;i<links;i++){
             if(bottleneck_i==i){
@@ -202,7 +204,7 @@ int main(int argc, char *argv[])
         [4]={3,5,0,10},
     };
     {
-        uint32_t bottleneck_bw=12*bw_unit;
+        uint64_t bottleneck_bw=12*bw_unit;
         LinkProperty *info_ptr=topoinfo2;
         for(int i=0;i<links;i++){
             if(bottleneck_i==i){
@@ -213,31 +215,81 @@ int main(int argc, char *argv[])
         }
     }
     LinkProperty *topoinfo_ptr=nullptr;
-    uint32_t buffer_ms=0;
+    uint64_t buffer_ms=0;
     
     if(0==instance.compare("1")){
         topoinfo_ptr=topoinfo1;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt*0.5;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*1;
     }
     else if(0==instance.compare("2")){
         topoinfo_ptr=topoinfo1;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt*0.8;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*2;
     }
     else if(0==instance.compare("3")){
         topoinfo_ptr=topoinfo1;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt*2;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*3;
     }
     else if(0==instance.compare("4")){
         topoinfo_ptr=topoinfo1;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt*32;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*4;
+    }
+    else if(0==instance.compare("5")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*5;
+    }
+    else if(0==instance.compare("6")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*6;
+    }
+    else if(0==instance.compare("7")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*8;
+    }
+    else if(0==instance.compare("8")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*10;
+    }
+    else if(0==instance.compare("9")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*12;
+    }
+    else if(0==instance.compare("10")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*14;
+    }
+    else if(0==instance.compare("11")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*16;
+    }
+    else if(0==instance.compare("12")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*18;
+    }
+    else if(0==instance.compare("13")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*25;
+    }
+    else if(0==instance.compare("14")){
+        topoinfo_ptr=topoinfo1;
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        buffer_ms=rtt*30;
     }
     else{
         topoinfo_ptr=topoinfo1;
-        uint32_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
+        uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
         buffer_ms=4*rtt/2;
     }
     //for utility
@@ -260,23 +312,23 @@ int main(int argc, char *argv[])
         server->SetStartTime (Seconds (0.0));
     }
     //install server on h5
-    Address tcp_sink_addr2;
-    {
-        Ptr<Node> host=topo.Get(5);
-        Ptr<Ipv4> ipv4 = host->GetObject<Ipv4> ();
-        Ipv4Address serv_ip= ipv4->GetAddress (1, 0).GetLocal();
-        InetSocketAddress socket_addr=InetSocketAddress{serv_ip,serv_port};
-        tcp_sink_addr2=socket_addr;
-        Ptr<TcpServer> server=CreateObject<TcpServer>(tcp_sink_addr2);
-        host->AddApplication(server);
-        server->SetStartTime (Seconds (0.0));
-    }
+    // Address tcp_sink_addr2;
+    // {
+    //     Ptr<Node> host=topo.Get(5);
+    //     Ptr<Ipv4> ipv4 = host->GetObject<Ipv4> ();
+    //     Ipv4Address serv_ip= ipv4->GetAddress (1, 0).GetLocal();
+    //     InetSocketAddress socket_addr=InetSocketAddress{serv_ip,serv_port};
+    //     tcp_sink_addr2=socket_addr;uint64_t
+    //     Ptr<TcpServer> server=CreateObject<TcpServer>(tcp_sink_addr2);
+    //     host->AddApplication(server);
+    //     server->SetStartTime (Seconds (0.0));
+    // }
     
-    uint64_t totalTxBytes = 100000*1500;
+    uint64_t totalTxBytes1 = 1000000*1500;
     // tcp client1 on h0
     {
         Ptr<Node> host=topo.Get(0);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes1,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
         host->AddApplication(client);
         client->ConfigurePeer(tcp_sink_addr1);
         client->SetCongestionAlgo(cc1);
@@ -284,29 +336,30 @@ int main(int argc, char *argv[])
         client->SetStopTime (Seconds (simDuration));
     }
     // tcp client2 on h0
-    // {
-    //     Ptr<Node> host=topo.Get(0);
-    //     Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
-    //     host->AddApplication(client);
-    //     client->ConfigurePeer(tcp_sink_addr1);
-    //     client->SetCongestionAlgo(cc1);
-    //     client->SetStartTime (Seconds (startTime));
-    //     client->SetStopTime (Seconds (simDuration));
-    // }
-    // tcp client3 on h4
     {
-        Ptr<Node> host=topo.Get(4);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+        Ptr<Node> host=topo.Get(0);
+        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes1,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
         host->AddApplication(client);
-        client->ConfigurePeer(tcp_sink_addr2);
+        client->ConfigurePeer(tcp_sink_addr1);
         client->SetCongestionAlgo(cc2);
         client->SetStartTime (Seconds (startTime));
         client->SetStopTime (Seconds (simDuration));
     }
-    // tcp client4 on h4
+    // tcp client3 on h4
+    // uint64_t totalTxBytes2 = 20000*1500;
     // {
     //     Ptr<Node> host=topo.Get(4);
-    //     Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+    //     Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes2,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+    //     host->AddApplication(client);
+    //     client->ConfigurePeer(tcp_sink_addr2);
+    //     client->SetCongestionAlgo(cc2);
+    //     client->SetStartTime (Seconds (startTime));
+    //     client->SetStopTime (Seconds (simDuration));
+    // }
+    // // tcp client4 on h4
+    // {
+    //     Ptr<Node> host=topo.Get(4);
+    //     Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes2,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
     //     host->AddApplication(client);
     //     client->ConfigurePeer(tcp_sink_addr2);
     //     client->SetCongestionAlgo(cc2);
@@ -317,5 +370,4 @@ int main(int argc, char *argv[])
     Simulator::Run ();
     Simulator::Destroy ();
     return 0;
-    
 }

@@ -118,7 +118,7 @@ static NodeContainer BuildDumbbellTopo(LinkProperty *topoinfo,int links,int bott
 }
 static const double startTime=0;
 static const double simDuration=300.0;
-//./waf --run "scratch/tcp-dumbbell-deftime --it=4 --cc1=cubic --cc2=bbr --folder=cubic-bbr"
+//./waf --run "scratch/tcp-dumbbell-deftime --it=4 --cc1=bbrplus --cc2=cubic --folder=bbrplus-cubic"
 int main(int argc, char *argv[])
 {
     LogComponentEnable("TcpDumbbell", LOG_LEVEL_ALL);
@@ -153,12 +153,12 @@ int main(int argc, char *argv[])
     }
     
     if(0==cc1.compare("reno")||0==cc1.compare("bic")||0==cc1.compare("cubic")||
-      0==cc1.compare("bbr")||0==cc1.compare("bbr2")){}
+      0==cc1.compare("bbr")||0==cc1.compare("bbr2")||0==cc1.compare("bbrplus")){}
     else{
         NS_ASSERT_MSG(0,"please input correct cc1");
     }
     if(0==cc2.compare("reno")||0==cc2.compare("bic")||0==cc2.compare("cubic")||
-      0==cc2.compare("bbr")||0==cc2.compare("bbr2")){}
+      0==cc2.compare("bbr")||0==cc2.compare("bbr2")||0==cc2.compare("bbrplus")){}
     else{
         NS_ASSERT_MSG(0,"please input correct cc2");
     }
@@ -272,11 +272,11 @@ int main(int argc, char *argv[])
         server->SetStartTime (Seconds (0.0));
     }
     
-    uint64_t totalTxBytes = 100000*1500;
+    uint64_t totalTxBytes1 = 100000*1500;
     // tcp client1 on h0
     {
         Ptr<Node> host=topo.Get(0);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes1,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
         host->AddApplication(client);
         client->ConfigurePeer(tcp_sink_addr1);
         client->SetCongestionAlgo(cc1);
@@ -286,7 +286,7 @@ int main(int argc, char *argv[])
     // tcp client2 on h0
     {
         Ptr<Node> host=topo.Get(0);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes1,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
         host->AddApplication(client);
         client->ConfigurePeer(tcp_sink_addr1);
         client->SetCongestionAlgo(cc1);
@@ -294,23 +294,24 @@ int main(int argc, char *argv[])
         client->SetStopTime (Seconds (simDuration));
     }
     // tcp client3 on h4
+    uint64_t totalTxBytes2 = 10000*1500;
     {
         Ptr<Node> host=topo.Get(4);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes2,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
         host->AddApplication(client);
         client->ConfigurePeer(tcp_sink_addr2);
         client->SetCongestionAlgo(cc2);
-        client->SetStartTime (Seconds (startTime+20));
+        client->SetStartTime (Seconds (startTime));
         client->SetStopTime (Seconds (simDuration));
     }
     // tcp client4 on h4
     {
         Ptr<Node> host=topo.Get(4);
-        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
+        Ptr<TcpClient>  client= CreateObject<TcpClient> (totalTxBytes2,TcpClient::E_TRACE_RTT|TcpClient::E_TRACE_INFLIGHT|TcpClient::E_TRACE_RATE);
         host->AddApplication(client);
         client->ConfigurePeer(tcp_sink_addr2);
         client->SetCongestionAlgo(cc2);
-        client->SetStartTime (Seconds (startTime+20));
+        client->SetStartTime (Seconds (startTime));
         client->SetStopTime (Seconds (simDuration));
     }
     Simulator::Stop (Seconds (simDuration+10.0));

@@ -3,9 +3,9 @@ algo1=Cubic
 algo2=bbr
 picname=bbr
 file1=10.1.1.1_49153_10.1.3.2_5000
-file2=10.1.4.2_49153_10.1.5.2_5000
+file2=10.1.1.1_49154_10.1.3.2_5000
 output=${algo1}-${algo2}
-for i in $(seq 1 4)
+for i in $(seq 13 14)
 do
 
     folder="$i"
