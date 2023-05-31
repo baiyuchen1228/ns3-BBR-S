@@ -179,14 +179,14 @@ int main(int argc, char *argv[])
     uint64_t links=3;
     int bottleneck_i=1;
     LinkProperty topoinfo1[]={
-        [0]={0,2,0,1},
-        [1]={2,3,0,1},
-        [2]={3,1,0,1},
+        [0]={0,2,0,3},
+        [1]={2,3,0,3},
+        [2]={3,1,0,3},
         // [3]={2,4,0,10},
         // [4]={3,5,0,10},
     };
     {
-        uint64_t bottleneck_bw=10*bw_unit;//10Mbps
+        uint64_t bottleneck_bw=100*bw_unit;//10Mbps
         LinkProperty *info_ptr=topoinfo1;
         for(int i=0;i<links;i++){
             if(bottleneck_i==i){
@@ -220,7 +220,7 @@ int main(int argc, char *argv[])
     if(0==instance.compare("1")){
         topoinfo_ptr=topoinfo1;
         uint64_t rtt=CalMaxRttInDumbbell(topoinfo_ptr,links);
-        buffer_ms=rtt*1;
+        buffer_ms=rtt*0.5;
     }
     else if(0==instance.compare("2")){
         topoinfo_ptr=topoinfo1;
